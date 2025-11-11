@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evidence Tracker</title>
+    <title>The Evidence Locker</title>
     <style>
         /* --- THEMING VARIABLES --- */
         :root {
@@ -66,7 +66,7 @@
         /* --- HEADER AREA --- */
         .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
         .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
-        #header-logo-img { max-width: 100%; height: auto; max-height: 200px; display: block; }
+        #header-logo-img { max-width: 100%; height: auto; max-height: 100px; display: block; }
         .header-controls { position: absolute; right: 0; top: 0; display: flex; align-items: center; gap: 15px; z-index: 10; }
         #theme-toggle { background: none; border: 2px solid var(--border-color); color: var(--text-color); padding: 6px 10px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
         #theme-toggle:hover { background-color: var(--row-hover); }
@@ -77,7 +77,7 @@
         /* --- FOOTER AREA --- */
         .footer-section { margin-top: auto; padding-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
         .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: -5px; }
-        #footer-logo-img { max-width: 200px; max-height: 120px; width: auto; height: auto; display: block; }
+        #footer-logo-img { max-width: 200px; max-height: 80px; width: auto; height: auto; display: block; }
 
         /* --- FILTER TOGGLE --- */
         #filter-toggle { background-color: var(--filter-area-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 8px; transition: background-color 0.2s; }
@@ -233,16 +233,15 @@
     // === CONFIGURATION SECTION (EDIT HERE) ===
     // =========================================
     const CONFIG = {
-        headerLogo: 'theevidencelocker.png',
-        footerLogo: 'stark4n6.jpg',
+        headerLogo: 'your-header-image.png',
+        footerLogo: 'your-footer-image.png',
         social: {
-            website: "https://startme.stark4n6.com/",
-            github: "https://github.com/stark4n6",
-            linkedin: "https://www.linkedin.com/in/kevin-pagano/",
-            x: "https://twitter.com/stark4n6"
+            website: "https://example.com",
+            github: "https://github.com/example",
+            linkedin: "https://linkedin.com/in/example",
+            x: "https://twitter.com/example"
         }
     };
-    // TABLE_DATA is now loaded from data.json
     // =========================================
 
     // --- COPY TO CLIPBOARD FUNCTION (Must be global) ---
