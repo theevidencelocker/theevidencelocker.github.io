@@ -66,7 +66,7 @@
         /* --- HEADER AREA --- */
         .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
         .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
-        #header-logo-img { max-width: 100%; height: auto; max-height: 100px; display: block; }
+        #header-logo-img { max-width: 100%; height: auto; max-height: 200px; display: block; }
         .header-controls { position: absolute; right: 0; top: 0; display: flex; align-items: center; gap: 15px; z-index: 10; }
         #theme-toggle { background: none; border: 2px solid var(--border-color); color: var(--text-color); padding: 6px 10px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
         #theme-toggle:hover { background-color: var(--row-hover); }
@@ -352,6 +352,7 @@
     function loadActionTableScript() {
         const script = document.createElement('script');
         script.type = 'module';
+        // Use jsdelivr CDN as a reliable alternative to unpkg
         script.src = 'https://cdn.jsdelivr.net/npm/action-table/dist/action-table.js';
         document.body.appendChild(script);
     }
@@ -371,4 +372,3 @@
 
 </body>
 </html>
-
