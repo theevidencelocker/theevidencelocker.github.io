@@ -63,7 +63,6 @@
     .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
     #header-logo-img { max-width: 100%; max-height: 200px; }
     
-    /* --- THIS RULE WAS MODIFIED --- */
     .header-controls { 
       position: absolute; 
       right: 0; 
@@ -72,14 +71,14 @@
       align-items: flex-start; /* Aligns items to the top */
       gap: 15px; 
     }
-    /* --- THIS RULE WAS ADDED --- */
+
     .header-info-stack {
       display: flex;
       flex-direction: column;
       align-items: flex-end; /* Aligns content to the right */
       gap: 6px; /* Space between social links and date */
     }
-    /* --- THIS RULE WAS ADDED --- */
+
     .last-updated-text {
       font-size: 0.75rem;
       color: var(--icon);
@@ -314,7 +313,6 @@
     document.getElementById("header-social-links").innerHTML=sHTML;
     document.getElementById("footer-social-links").innerHTML=sHTML;
 
-    // --- THIS BLOCK WAS ADDED ---
     try {
       const lastUpdated = new Date(document.lastModified);
       const year = lastUpdated.getFullYear();
@@ -325,7 +323,6 @@
       console.error("Could not set last updated date:", e);
       document.getElementById("last-updated").textContent = "";
     }
-    // --- END BLOCK ---
 
     const html=document.documentElement;
     const themeIcon = document.getElementById("theme-icon");
