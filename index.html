@@ -1,374 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Evidence Locker</title>
-    <style>
-        /* --- THEMING VARIABLES --- */
-        :root {
-            --bg-color: #f8f9fa;
-            --text-color: #212529;
-            --container-bg: #ffffff;
-            --header-bg: #0d6efd;
-            --header-text: white;
-            --border-color: #dee2e6;
-            --row-hover: #e9ecef;
-            --row-alt-bg: #f8f9fa;
-            --input-bg: #ffffff;
-            --filter-area-bg: #e9ecef;
-            --link-color: #0d6efd;
-            --icon-color: #6c757d;
-            --tooltip-bg: #333;
-            --tooltip-text: #fff;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Evidence Locker</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/action-table/dist/action-table.js"></script>
 
-        [data-theme="dark"] {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --container-bg: #1e1e1e;
-            --header-bg: #375a7f;
-            --header-text: #ffffff;
-            --border-color: #444;
-            --row-hover: #3a3a3a;
-            --row-alt-bg: #262626;
-            --input-bg: #2b2b2b;
-            --filter-area-bg: #2c2c2c;
-            --link-color: #75b6fd;
-            --icon-color: #adb5bd;
-            --tooltip-bg: #e0e0e0;
-            --tooltip-text: #121212;
-        }
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #212529;
+      --container-bg: #ffffff;
+      --header-bg: #0d6efd;
+      --header-text: white;
+      --border-color: #dee2e6;
+      --row-hover: #e9ecef;
+      --row-alt-bg: #f8f9fa;
+      --input-bg: #ffffff;
+      --filter-area-bg: #e9ecef;
+      --link-color: #0d6efd;
+      --icon-color: #6c757d;
+      --tooltip-bg: #333;
+      --tooltip-text: #fff;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --container-bg: #1e1e1e;
+      --header-bg: #375a7f;
+      --header-text: #ffffff;
+      --border-color: #444;
+      --row-hover: #3a3a3a;
+      --row-alt-bg: #262626;
+      --input-bg: #2b2b2b;
+      --filter-area-bg: #2c2c2c;
+      --link-color: #75b6fd;
+      --icon-color: #adb5bd;
+      --tooltip-bg: #e0e0e0;
+      --tooltip-text: #121212;
+    }
 
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: var(--container-bg);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background-color 0.3s;
-            display: flex;
-            flex-direction: column;
-            min-height: 95vh;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
 
-        /* --- HEADER AREA --- */
-        .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
-        .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
-        #header-logo-img { max-width: 100%; height: auto; max-height: 200px; display: block; }
-        .header-controls { position: absolute; right: 0; top: 0; display: flex; align-items: center; gap: 15px; z-index: 10; }
-        #theme-toggle { background: none; border: 2px solid var(--border-color); color: var(--text-color); padding: 6px 10px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
-        #theme-toggle:hover { background-color: var(--row-hover); }
-        .social-links { display: flex; gap: 15px; align-items: center; }
-        .social-icon { color: var(--text-color); transition: color 0.2s, transform 0.2s; display: flex; }
-        .social-icon:hover { color: var(--link-color); transform: scale(1.1); }
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: var(--container-bg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      min-height: 95vh;
+    }
 
-        /* --- FOOTER AREA --- */
-        .footer-section { margin-top: auto; padding-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
-        .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: -5px; }
-        #footer-logo-img { max-width: 200px; max-height: 80px; width: auto; height: auto; display: block; }
+    .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
+    .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
+    #header-logo-img { max-width: 100%; height: auto; max-height: 200px; display: block; }
+    .header-controls { position: absolute; right: 0; top: 0; display: flex; align-items: center; gap: 15px; }
+    #theme-toggle { background: none; border: 2px solid var(--border-color); color: var(--text-color); padding: 6px 10px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
+    #theme-toggle:hover { background-color: var(--row-hover); }
+    .social-links { display: flex; gap: 15px; align-items: center; }
+    .social-icon { color: var(--text-color); transition: color 0.2s, transform 0.2s; display: flex; }
+    .social-icon:hover { color: var(--link-color); transform: scale(1.1); }
 
-        /* --- FILTER TOGGLE --- */
-        #filter-toggle { background-color: var(--filter-area-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 8px; transition: background-color 0.2s; }
-        #filter-toggle:hover { background-color: var(--border-color); }
-        .hidden { display: none !important; }
+    #filter-toggle { background-color: var(--filter-area-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 8px; }
+    #filter-toggle:hover { background-color: var(--border-color); }
+    .hidden { display: none !important; }
 
-        /* --- TABLE STYLES --- */
-        .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; padding: 15px; background: var(--filter-area-bg); border-radius: 6px; border: 1px solid var(--border-color); }
-        .filters-grid label { font-size: 0.9em; font-weight: bold; opacity: 0.9; display: flex; flex-direction: column; }
-        .filters-grid input, .filters-grid select { margin-top: 5px; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--input-bg); color: var(--text-color); }
-        .table-responsive { overflow-x: auto; padding-bottom: 100px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; white-space: nowrap; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-color); vertical-align: top; }
-        td.icon-cell { text-align: center; vertical-align: middle; }
-        .table-icon { color: var(--link-color); transition: transform 0.2s, color 0.2s; display: inline-block; }
-        .table-icon:hover { color: var(--header-bg); transform: scale(1.2); }
-        .info-icon { color: var(--icon-color); }
-        .info-icon:hover { color: var(--link-color); }
-        th { background-color: var(--header-bg); color: var(--header-text); transition: background-color 0.2s; }
-        th:hover { filter: brightness(110%); }
-        th button { all: unset; cursor: pointer; width: 100%; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
-        
-        tbody tr:nth-child(even) { background-color: var(--row-alt-bg); }
-        tr:hover { background-color: var(--row-hover) !important; }
+    .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; padding: 15px; background: var(--filter-area-bg); border-radius: 6px; border: 1px solid var(--border-color); }
+    .filters-grid label { font-size: 0.9em; font-weight: bold; display: flex; flex-direction: column; }
+    .filters-grid input, .filters-grid select { margin-top: 5px; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--input-bg); color: var(--text-color); }
+    .table-responsive { overflow-x: auto; padding-bottom: 100px; }
 
-        a { color: var(--link-color); text-decoration: none; }
-        .icon-cell a { text-decoration: none; }
-        th .sort-arrow { opacity: 0.5; }
-        th[aria-sort="ascending"] .sort-arrow { opacity: 1; content: "↑"; }
-        th[aria-sort="descending"] .sort-arrow { opacity: 1; content: "↓"; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; white-space: nowrap; }
+    th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-color); vertical-align: top; }
+    tbody tr:nth-child(even) { background-color: var(--row-alt-bg); }
+    tr:hover { background-color: var(--row-hover); }
 
-        /* --- TOOLTIP STYLES --- */
-        .copy-container {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .copy-tooltip {
-            visibility: hidden;
-            background-color: var(--tooltip-bg);
-            color: var(--tooltip-text);
-            text-align: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            position: absolute;
-            z-index: 100;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-family: monospace;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            pointer-events: none;
-        }
-        .copy-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: var(--tooltip-bg) transparent transparent transparent;
-        }
-        .copy-container:hover .copy-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-        .copy-tooltip.copied {
-            background-color: #28a745;
-            color: white;
-        }
-        .copy-tooltip.copied::after {
-             border-color: #28a745 transparent transparent transparent;
-        }
+    th { background-color: var(--header-bg); color: var(--header-text); cursor: pointer; }
+    th:hover { filter: brightness(110%); }
 
-        @media (max-width: 768px) {
-            .header-controls { position: static; margin-top: 15px; justify-content: center; width: 100%; }
-            .header-row { flex-wrap: wrap; }
-        }
-    </style>
+    .copy-container { position: relative; display: inline-flex; cursor: pointer; }
+    .copy-tooltip { visibility: hidden; background-color: var(--tooltip-bg); color: var(--tooltip-text); text-align: center; padding: 8px 12px; border-radius: 6px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-family: monospace; font-size: 0.85rem; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.2); pointer-events: none; }
+    .copy-container:hover .copy-tooltip { visibility: visible; opacity: 1; }
+    .copy-tooltip.copied { background-color: #28a745; color: white; }
+
+    .footer-section { margin-top: auto; padding-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
+    .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon-color); text-transform: uppercase; letter-spacing: 1px; }
+    #footer-logo-img { max-width: 200px; height: auto; }
+  </style>
 </head>
-<body>
 
-<div class="container">
+<body>
+  <div class="container">
     <div class="header-section">
-        <div class="header-row">
-            <img id="header-logo-img" alt="Header Logo">
-            <div class="header-controls">
-                <div class="social-links" id="header-social-links"></div>
-                <button id="theme-toggle" aria-label="Toggle dark mode">
-                    <span id="theme-icon">🌓</span>
-                </button>
-            </div>
+      <div class="header-row">
+        <img id="header-logo-img" alt="Header Logo">
+        <div class="header-controls">
+          <div class="social-links" id="header-social-links"></div>
+          <button id="theme-toggle" aria-label="Toggle dark mode">
+            <span id="theme-icon">🌓</span>
+          </button>
         </div>
+      </div>
     </div>
 
     <action-table sort="Year Released" direction="descending">
-        <button type="button" id="filter-toggle"><span id="filter-toggle-icon">🔽</span><span id="filter-toggle-text">Hide Filters</span></button>
-        <div id="filter-container">
-            <action-table-filters>
-                <div class="filters-grid">
-                    <label style="grid-column: 1 / -1;">Global Search:<input type="search" name="action-table" placeholder="Search entire table..."></label>
-                    <label>Year: <input type="number" name="Year Release" placeholder="Filter Year"></label>
-                    <label>Author: <input type="text" name="Author" placeholder="Filter Author"></label>
-                    <label>OS: <input type="text" name="OS" placeholder="Filter OS"></label>
-                    <label>Category: <input type="text" name="Category" placeholder="Filter Category"></label>
-                    <label>Name: <input type="text" name="Evidence Name" placeholder="Filter Name"></label>
-                    <label>Password: <input type="text" name="Password" placeholder="Filter PW"></label>
-                    <label>Hash: <input type="text" name="Hash" placeholder="Filter Hash"></label>
-                    <label>Event: <input type="text" name="Event" placeholder="Filter Event"></label>
-                    <button type="reset" style="grid-column: 1 / -1; padding: 8px; cursor: pointer; background:#6c757d; color:white; border:none; border-radius:4px;">Clear All Filters</button>
-                </div>
-            </action-table-filters>
-        </div>
+      <button type="button" id="filter-toggle"><span id="filter-toggle-icon">🔽</span><span id="filter-toggle-text">Hide Filters</span></button>
+      <div id="filter-container">
+        <action-table-filters>
+          <div class="filters-grid">
+            <label style="grid-column: 1 / -1;">Global Search:
+              <input type="search" name="action-table" placeholder="Search entire table...">
+            </label>
+            <label>Year: <input type="number" name="Year Release" placeholder="Filter Year"></label>
+            <label>Author: <input type="text" name="Author" placeholder="Filter Author"></label>
+            <label>OS: <input type="text" name="OS" placeholder="Filter OS"></label>
+            <label>Category: <input type="text" name="Category" placeholder="Filter Category"></label>
+            <label>Name: <input type="text" name="Evidence Name" placeholder="Filter Name"></label>
+            <label>Password: <input type="text" name="Password" placeholder="Filter PW"></label>
+            <label>Hash: <input type="text" name="Hash" placeholder="Filter Hash"></label>
+            <label>Event: <input type="text" name="Event" placeholder="Filter Event"></label>
+            <button type="reset" style="grid-column: 1 / -1; padding: 8px; cursor: pointer; background:#6c757d; color:white; border:none; border-radius:4px;">Clear All Filters</button>
+          </div>
+        </action-table-filters>
+      </div>
 
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th sortable>Year Release</th>
-                        <th sortable>Author</th>
-                        <th sortable>OS</th>
-                        <th sortable>Category</th>
-                        <th style="text-align: center;">Evidence Link</th>
-                        <th sortable>Evidence Name</th>
-                        <th style="text-align: center;">Password</th>
-                        <th style="text-align: center;">Hash</th>
-                        <th sortable>Event</th>
-                        <th style="text-align: center;">Info</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    </tbody>
-            </table>
-        </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th sortable>Year Release</th>
+              <th sortable>Author</th>
+              <th sortable>OS</th>
+              <th sortable>Category</th>
+              <th style="text-align:center;">Evidence Link</th>
+              <th sortable>Evidence Name</th>
+              <th style="text-align:center;">Password</th>
+              <th style="text-align:center;">Hash</th>
+              <th sortable>Event</th>
+              <th style="text-align:center;">Info</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
     </action-table>
 
     <div class="footer-section">
-        <div class="powered-by">Powered By</div>
-        <img id="footer-logo-img" alt="Powered By Logo">
-        <div class="social-links" id="footer-social-links"></div>
+      <div class="powered-by">Powered By</div>
+      <img id="footer-logo-img" alt="Powered By Logo">
+      <div class="social-links" id="footer-social-links"></div>
     </div>
-</div>
+  </div>
 
-<script>
-    // =========================================
-    // === CONFIGURATION SECTION (EDIT HERE) ===
-    // =========================================
+  <script>
     const CONFIG = {
-        headerLogo: 'theevidencelocker.png',
-        footerLogo: 'stark4n6.jpg',
-        social: {
-            website: "https://startme.stark4n6.com/",
-            github: "https://github.com/stark4n6",
-            linkedin: "https://www.linkedin.com/in/kevin-pagano/",
-            x: "https://twitter.com/stark4n6"
-        }
+      headerLogo: 'theevidencelocker.png',
+      footerLogo: 'stark4n6.jpg',
+      social: {
+        website: "https://startme.stark4n6.com/",
+        github: "https://github.com/stark4n6",
+        linkedin: "https://www.linkedin.com/in/kevin-pagano/",
+        x: "https://twitter.com/stark4n6"
+      }
     };
-    // =========================================
 
-    // --- COPY TO CLIPBOARD FUNCTION (Must be global) ---
     function copyToClipboard(text, tooltipId) {
-        navigator.clipboard.writeText(text).then(() => {
-            const tooltip = document.getElementById(tooltipId);
-            const originalText = tooltip.innerText;
-            tooltip.innerText = "Copied!";
-            tooltip.classList.add("copied");
-            setTimeout(() => {
-                tooltip.innerText = originalText;
-                tooltip.classList.remove("copied");
-            }, 2000);
-        });
+      navigator.clipboard.writeText(text).then(() => {
+        const tooltip = document.getElementById(tooltipId);
+        const originalText = tooltip.innerText;
+        tooltip.innerText = "Copied!";
+        tooltip.classList.add("copied");
+        setTimeout(() => {
+          tooltip.innerText = originalText;
+          tooltip.classList.remove("copied");
+        }, 2000);
+      });
     }
 
-    // --- INITIALIZE APP (Main async function) ---
     async function initializeApp() {
-        
-        // 1. Apply Config Images
-        document.getElementById('header-logo-img').src = CONFIG.headerLogo;
-        document.getElementById('footer-logo-img').src = CONFIG.footerLogo;
+      document.getElementById('header-logo-img').src = CONFIG.headerLogo;
+      document.getElementById('footer-logo-img').src = CONFIG.footerLogo;
 
-        // 2. Inject Social Links
-        const S_ICONS = {
-            web: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
-            git: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>`,
-            in: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`,
-            x: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
-        };
-        const sHTML = `
-            <a href="${CONFIG.social.website}" target="_blank" class="social-icon" title="Website">${S_ICONS.web}</a>
-            <a href="${CONFIG.social.github}" target="_blank" class="social-icon" title="GitHub">${S_ICONS.git}</a>
-            <a href="${CONFIG.social.linkedin}" target="_blank" class="social-icon" title="LinkedIn">${S_ICONS.in}</a>
-            <a href="${CONFIG.social.x}" target="_blank" class="social-icon" title="X (Twitter)">${S_ICONS.x}</a>
-        `;
-        document.getElementById('header-social-links').innerHTML = sHTML;
-        document.getElementById('footer-social-links').innerHTML = sHTML;
+      const S_ICONS = {
+        web: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
+        git: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>`,
+        in: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`,
+        x: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>`
+      };
+      const sHTML = `
+        <a href="${CONFIG.social.website}" target="_blank" class="social-icon">${S_ICONS.web}</a>
+        <a href="${CONFIG.social.github}" target="_blank" class="social-icon">${S_ICONS.git}</a>
+        <a href="${CONFIG.social.linkedin}" target="_blank" class="social-icon">${S_ICONS.in}</a>
+        <a href="${CONFIG.social.x}" target="_blank" class="social-icon">${S_ICONS.x}</a>`;
+      document.getElementById('header-social-links').innerHTML = sHTML;
+      document.getElementById('footer-social-links').innerHTML = sHTML;
 
-        // 3. Fetch and Render Table Data
-        const ICONS = {
-            link: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="table-icon"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`,
-            hash: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="table-icon"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>`,
-            password: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="table-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>`,
-            info: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="table-icon info-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`
-        };
-        
-        // --- FETCH DATA FROM data.json ---
-        const response = await fetch('data.json');
-        const TABLE_DATA = await response.json();
-        
-        const tableBody = document.getElementById('table-body');
-        let tableHTML = '';
-        
-        TABLE_DATA.forEach((row, index) => {
-            const createCopyCell = (value, icon, type, index) => {
-                 if (!value || value === "N/A") return value;
-                 return `<div class="copy-container" onclick="copyToClipboard('${value}', '${type}-tooltip-${index}')">
-                       ${icon}
-                       <span id="${type}-tooltip-${index}" class="copy-tooltip">${value}</span>
-                   </div>`;
-            }
+      const ICONS = {
+        link: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`,
+        hash: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path></svg>`,
+        password: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>`,
+        info: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`
+      };
 
-            const passwordCellContent = createCopyCell(row.password, ICONS.password, 'pass', index);
-            const hashCellContent = createCopyCell(row.hash, ICONS.hash, 'hash', index);
+      const response = await fetch('data.json');
+      const TABLE_DATA = await response.json();
+      const tableBody = document.getElementById('table-body');
 
-            tableHTML += `<tr>
-                <td>${row.year}</td>
-                <td>${row.author}</td>
-                <td>${row.os}</td>
-                <td>${row.category}</td>
-                <td class="icon-cell"><a href="${row.evidenceUrl}" target="_blank" title="${row.evidenceUrl}">${ICONS.link}</a></td>
-                <td>${row.evidenceName}</td>
-                <td class="icon-cell" filter-value="${row.password}">${passwordCellContent}</td>
-                <td class="icon-cell" filter-value="${row.hash}">${hashCellContent}</td>
-                <td>${row.event}</td>
-                <td class="icon-cell"><a href="${row.infoUrl}" target="_blank" title="${row.infoUrl}">${ICONS.info}</a></td>
-            </tr>`;
-        });
-        tableBody.innerHTML = tableHTML;
+      tableBody.innerHTML = TABLE_DATA.map((row, i) => `
+        <tr>
+          <td>${row.year}</td>
+          <td>${row.author}</td>
+          <td>${row.os}</td>
+          <td>${row.category}</td>
+          <td style="text-align:center;"><a href="${row.evidenceUrl}" target="_blank">${ICONS.link}</a></td>
+          <td>${row.evidenceName}</td>
+          <td style="text-align:center;">${row.password ? `<div class='copy-container' onclick="copyToClipboard('${row.password}','pw-${i}')">${ICONS.password}<span id="pw-${i}" class="copy-tooltip">${row.password}</span></div>` : ''}</td>
+          <td style="text-align:center;">${row.hash ? `<div class='copy-container' onclick="copyToClipboard('${row.hash}','hash-${i}')">${ICONS.hash}<span id="hash-${i}" class="copy-tooltip">${row.hash}</span></div>` : ''}</td>
+          <td>${row.event}</td>
+          <td style="text-align:center;"><a href="${row.infoUrl}" target="_blank">${ICONS.info}</a></td>
+        </tr>`).join('');
+
+      // ✅ Notify action-table that new data is available
+      document.querySelector('action-table').forceUpdate();
     }
 
-    // --- UI Handlers (Theme, Filter Toggle) ---
     function initializeUIHandlers() {
-        const toggleButton = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const htmlElement = document.documentElement;
-        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        if (currentTheme === 'dark') { htmlElement.setAttribute('data-theme', 'dark'); themeIcon.textContent = '☀️'; }
-        toggleButton.addEventListener('click', () => {
-            let theme = htmlElement.getAttribute('data-theme');
-            if (theme === 'dark') { htmlElement.setAttribute('data-theme', 'light'); localStorage.setItem('theme', 'light'); themeIcon.textContent = '🌓'; }
-            else { htmlElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); themeIcon.textContent = '☀️'; }
-        });
+      const toggleBtn = document.getElementById('theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      const htmlEl = document.documentElement;
+      const current = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      if (current === 'dark') { htmlEl.setAttribute('data-theme', 'dark'); themeIcon.textContent = '☀️'; }
 
-        const filterToggleBtn = document.getElementById('filter-toggle');
-        const filterContainer = document.getElementById('filter-container');
-        const filterIcon = document.getElementById('filter-toggle-icon');
-        const filterText = document.getElementById('filter-toggle-text');
-        filterToggleBtn.addEventListener('click', () => {
-            filterContainer.classList.toggle('hidden');
-            if (filterContainer.classList.contains('hidden')) { filterIcon.textContent = '▶️'; filterText.textContent = 'Show Filters'; }
-            else { filterIcon.textContent = '🔽'; filterText.textContent = 'Hide Filters'; }
-        });
+      toggleBtn.addEventListener('click', () => {
+        const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+        htmlEl.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        themeIcon.textContent = isDark ? '🌓' : '☀️';
+      });
+
+      const filterToggle = document.getElementById('filter-toggle');
+      const filterContainer = document.getElementById('filter-container');
+      const filterIcon = document.getElementById('filter-toggle-icon');
+      const filterText = document.getElementById('filter-toggle-text');
+
+      filterToggle.addEventListener('click', () => {
+        filterContainer.classList.toggle('hidden');
+        const hidden = filterContainer.classList.contains('hidden');
+        filterIcon.textContent = hidden ? '▶️' : '🔽';
+        filterText.textContent = hidden ? 'Show Filters' : 'Hide Filters';
+      });
     }
 
-    // --- FUNCTION TO DYNAMICALLY LOAD action-table ---
-    function loadActionTableScript() {
-        const script = document.createElement('script');
-        script.type = 'module';
-        // Use jsdelivr CDN as a reliable alternative to unpkg
-        script.src = 'https://cdn.jsdelivr.net/npm/action-table/dist/action-table.js';
-        document.body.appendChild(script);
-    }
-
-    // --- RUN THE APP ---
-    // 1. Run all non-data-dependent UI setup
     initializeUIHandlers();
-    
-    // 2. Run the async data-loading function
-    initializeApp().then(() => {
-        // 3. *After* data is fetched and injected, load the action-table script
-        loadActionTableScript();
-    }).catch(err => {
-        console.error("Failed to initialize app:", err);
-    });
-</script>
-
+    initializeApp().catch(err => console.error("Failed to initialize app:", err));
+  </script>
 </body>
 </html>
