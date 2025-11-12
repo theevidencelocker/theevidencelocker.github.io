@@ -1,62 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Evidence Locker</title>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/action-table/dist/action-table.js"></script>
 
   <style>
     :root {
-      --bg-color: #f8f9fa;
-      --text-color: #212529;
-      --container-bg: #ffffff;
-      --header-bg: #0d6efd;
-      --header-text: white;
-      --border-color: #dee2e6;
-      --row-hover: #e9ecef;
-      --row-alt-bg: #f8f9fa;
-      --input-bg: #ffffff;
-      --filter-area-bg: #e9ecef;
-      --link-color: #0d6efd;
-      --icon-color: #6c757d;
+      --bg: #f8f9fa;
+      --text: #212529;
+      --container: #ffffff;
+      --header-bg: #3c464f;
+      --header-text: #ffffff;
+      --border: #dee2e6;
+      --hover: #e9ecef;
+      --alt: #f8f9fa;
+      --input: #ffffff;
+      --filter-bg: #e9ecef;
+      --link: #0d6efd;
+      --icon: #6c757d;
       --tooltip-bg: #333;
       --tooltip-text: #fff;
     }
-
     [data-theme="dark"] {
-      --bg-color: #121212;
-      --text-color: #e0e0e0;
-      --container-bg: #1e1e1e;
-      --header-bg: #375a7f;
+      --bg: #121212;
+      --text: #e0e0e0;
+      --container: #1e1e1e;
+      --header-bg: #3c464f;
       --header-text: #ffffff;
-      --border-color: #444;
-      --row-hover: #3a3a3a;
-      --row-alt-bg: #262626;
-      --input-bg: #2b2b2b;
-      --filter-area-bg: #2c2c2c;
-      --link-color: #75b6fd;
-      --icon-color: #adb5bd;
+      --border: #444;
+      --hover: #333;
+      --alt: #222;
+      --input: #2b2b2b;
+      --filter-bg: #2c2c2c;
+      --link: #75b6fd;
+      --icon: #adb5bd;
       --tooltip-bg: #e0e0e0;
       --tooltip-text: #121212;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
       padding: 20px;
-      line-height: 1.6;
-      transition: background-color 0.3s, color 0.3s;
+      transition: background 0.3s, color 0.3s;
     }
-
     .container {
       max-width: 1600px;
-      margin: 0 auto;
-      background: var(--container-bg);
-      padding: 20px;
+      margin: auto;
+      background: var(--container);
       border-radius: 8px;
+      padding: 20px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
@@ -65,206 +61,235 @@
 
     .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
     .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
-    #header-logo-img { max-width: 100%; height: auto; max-height: 200px; display: block; }
+    #header-logo-img { max-width: 100%; max-height: 200px; }
     .header-controls { position: absolute; right: 0; top: 0; display: flex; align-items: center; gap: 15px; }
-    #theme-toggle { background: none; border: 2px solid var(--border-color); color: var(--text-color); padding: 6px 10px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; }
-    #theme-toggle:hover { background-color: var(--row-hover); }
-    .social-links { display: flex; gap: 15px; align-items: center; }
-    .social-icon { color: var(--text-color); transition: color 0.2s, transform 0.2s; display: flex; }
-    .social-icon:hover { color: var(--link-color); transform: scale(1.1); }
+    #theme-toggle { background: none; border: 2px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 20px; cursor: pointer; }
+    .social-links { display: flex; gap: 15px; justify-content: center; }
+    .social-icon { color: var(--text); transition: color 0.2s, transform 0.2s; display: flex; }
+    .social-icon:hover { color: var(--link); transform: scale(1.1); }
+    
+    #filter-container {
+      display: flex;
+      justify-content: center;
+    }
 
-    #filter-toggle { background-color: var(--filter-area-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 8px; }
-    #filter-toggle:hover { background-color: var(--border-color); }
-    .hidden { display: none !important; }
+    .filters-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+      gap: 10px; 
+      margin-bottom: 20px; 
+      padding: 15px; 
+      background: var(--filter-bg); 
+      border-radius: 6px; 
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 800px;
+    }
+    .filters-grid label { 
+      font-size: 0.9em; 
+      font-weight: bold; 
+      display: flex; 
+      flex-direction: column;
+      text-align: center;
+    }
+    /* --- THIS RULE WAS MODIFIED --- */
+    .filters-grid input { 
+      margin-top: 5px; 
+      padding: 8px; 
+      border: 1px solid var(--border); 
+      border-radius: 4px; 
+      background: var(--input); 
+      color: var(--text);
+      text-align: center; /* This centers placeholder and typed text */
+    }
 
-    .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; padding: 15px; background: var(--filter-area-bg); border-radius: 6px; border: 1px solid var(--border-color); }
-    .filters-grid label { font-size: 0.9em; font-weight: bold; display: flex; flex-direction: column; }
-    .filters-grid input, .filters-grid select { margin-top: 5px; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--input-bg); color: var(--text-color); }
-    .table-responsive { overflow-x: auto; padding-bottom: 100px; }
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    
+    th, td { 
+      text-align: center; 
+      padding: 12px; 
+      border-bottom: 1px solid var(--border); 
+      vertical-align: middle;
+    }
+    
+    th {
+      background: var(--header-bg);
+      color: var(--header-text);
+      cursor: pointer;
+    }
+    tbody tr:nth-child(even) { background: var(--alt); }
+    tr:hover { background: var(--hover); }
+    a { color: var(--link); text-decoration: none; }
 
-    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; white-space: nowrap; }
-    th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-color); vertical-align: top; }
-    tbody tr:nth-child(even) { background-color: var(--row-alt-bg); }
-    tr:hover { background-color: var(--row-hover); }
-
-    th { background-color: var(--header-bg); color: var(--header-text); cursor: pointer; }
-    th:hover { filter: brightness(110%); }
-
-    .copy-container { position: relative; display: inline-flex; cursor: pointer; }
-    .copy-tooltip { visibility: hidden; background-color: var(--tooltip-bg); color: var(--tooltip-text); text-align: center; padding: 8px 12px; border-radius: 6px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-family: monospace; font-size: 0.85rem; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.2); pointer-events: none; }
+    .copy-container { position: relative; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+    .copy-tooltip { visibility: hidden; background: var(--tooltip-bg); color: var(--tooltip-text); padding: 6px 10px; border-radius: 4px; position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-family: monospace; font-size: 0.8rem; pointer-events: none; white-space: nowrap; }
     .copy-container:hover .copy-tooltip { visibility: visible; opacity: 1; }
-    .copy-tooltip.copied { background-color: #28a745; color: white; }
+    .copy-tooltip.copied { background: #28a745; color: #fff; }
 
-    .footer-section { margin-top: auto; padding-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
-    .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon-color); text-transform: uppercase; letter-spacing: 1px; }
-    #footer-logo-img { max-width: 200px; height: auto; }
+    .footer-section { margin-top: auto; text-align: center; padding-top: 40px; }
+    .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon); text-transform: uppercase; letter-spacing: 1px; }
+    #footer-logo-img { 
+      max-width: 300px;
+      max-height: 120px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="header-section">
-      <div class="header-row">
-        <img id="header-logo-img" alt="Header Logo">
-        <div class="header-controls">
-          <div class="social-links" id="header-social-links"></div>
-          <button id="theme-toggle" aria-label="Toggle dark mode">
-            <span id="theme-icon">🌓</span>
-          </button>
-        </div>
+<div class="container">
+  <div class="header-section">
+    <div class="header-row">
+      <img id="header-logo-img" alt="Header Logo">
+      <div class="header-controls">
+        <div class="social-links" id="header-social-links"></div>
+        <button id="theme-toggle"><span id="theme-icon">🌓</span></button>
       </div>
-    </div>
-
-    <action-table sort="Year Released" direction="descending">
-      <button type="button" id="filter-toggle"><span id="filter-toggle-icon">🔽</span><span id="filter-toggle-text">Hide Filters</span></button>
-      <div id="filter-container">
-        <action-table-filters>
-          <div class="filters-grid">
-            <label style="grid-column: 1 / -1;">Global Search:
-              <input type="search" name="action-table" placeholder="Search entire table...">
-            </label>
-            <label>Year: <input type="number" name="Year Release" placeholder="Filter Year"></label>
-            <label>Author: <input type="text" name="Author" placeholder="Filter Author"></label>
-            <label>OS: <input type="text" name="OS" placeholder="Filter OS"></label>
-            <label>Category: <input type="text" name="Category" placeholder="Filter Category"></label>
-            <label>Name: <input type="text" name="Evidence Name" placeholder="Filter Name"></label>
-            <label>Password: <input type="text" name="Password" placeholder="Filter PW"></label>
-            <label>Hash: <input type="text" name="Hash" placeholder="Filter Hash"></label>
-            <label>Event: <input type="text" name="Event" placeholder="Filter Event"></label>
-            <button type="reset" style="grid-column: 1 / -1; padding: 8px; cursor: pointer; background:#6c757d; color:white; border:none; border-radius:4px;">Clear All Filters</button>
-          </div>
-        </action-table-filters>
-      </div>
-
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th sortable>Year Release</th>
-              <th sortable>Author</th>
-              <th sortable>OS</th>
-              <th sortable>Category</th>
-              <th style="text-align:center;">Evidence Link</th>
-              <th sortable>Evidence Name</th>
-              <th style="text-align:center;">Password</th>
-              <th style="text-align:center;">Hash</th>
-              <th sortable>Event</th>
-              <th style="text-align:center;">Info</th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-    </action-table>
-
-    <div class="footer-section">
-      <div class="powered-by">Powered By</div>
-      <img id="footer-logo-img" alt="Powered By Logo">
-      <div class="social-links" id="footer-social-links"></div>
     </div>
   </div>
 
-  <script>
-    const CONFIG = {
-      headerLogo: 'theevidencelocker.png',
-      footerLogo: 'stark4n6.jpg',
-      social: {
-        website: "https://startme.stark4n6.com/",
-        github: "https://github.com/stark4n6",
-        linkedin: "https://www.linkedin.com/in/kevin-pagano/",
-        x: "https://twitter.com/stark4n6"
-      }
-    };
+  <div id="filter-container">
+    <div class="filters-grid">
+      <label>Search:<input type="text" id="search-global" placeholder="Search..."></label>
+      <label>Year:<input type="text" id="filter-year" placeholder="Filter Year"></label>
+      <label>Author:<input type="text" id="filter-author" placeholder="Filter Author"></label>
+      <label>OS:<input type="text" id="filter-os" placeholder="Filter OS"></label>
+      <label>Category:<input type="text" id="filter-category" placeholder="Filter Category"></label>
+      <button id="clear-filters" style="grid-column:1/-1;padding:8px;background:#6c757d;color:white;border:none;border-radius:4px;cursor:pointer;">Clear Filters</button>
+    </div>
+  </div>
 
-    function copyToClipboard(text, tooltipId) {
-      navigator.clipboard.writeText(text).then(() => {
-        const tooltip = document.getElementById(tooltipId);
-        const originalText = tooltip.innerText;
-        tooltip.innerText = "Copied!";
-        tooltip.classList.add("copied");
-        setTimeout(() => {
-          tooltip.innerText = originalText;
-          tooltip.classList.remove("copied");
-        }, 2000);
-      });
-    }
-
-    async function initializeApp() {
-      document.getElementById('header-logo-img').src = CONFIG.headerLogo;
-      document.getElementById('footer-logo-img').src = CONFIG.footerLogo;
-
-      const S_ICONS = {
-        web: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
-        git: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>`,
-        in: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`,
-        x: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>`
-      };
-      const sHTML = `
-        <a href="${CONFIG.social.website}" target="_blank" class="social-icon">${S_ICONS.web}</a>
-        <a href="${CONFIG.social.github}" target="_blank" class="social-icon">${S_ICONS.git}</a>
-        <a href="${CONFIG.social.linkedin}" target="_blank" class="social-icon">${S_ICONS.in}</a>
-        <a href="${CONFIG.social.x}" target="_blank" class="social-icon">${S_ICONS.x}</a>`;
-      document.getElementById('header-social-links').innerHTML = sHTML;
-      document.getElementById('footer-social-links').innerHTML = sHTML;
-
-      const ICONS = {
-        link: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`,
-        hash: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path></svg>`,
-        password: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>`,
-        info: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`
-      };
-
-      const response = await fetch('data.json');
-      const TABLE_DATA = await response.json();
-      const tableBody = document.getElementById('table-body');
-
-      tableBody.innerHTML = TABLE_DATA.map((row, i) => `
+  <div class="table-responsive">
+    <table id="evidence-table">
+      <thead>
         <tr>
-          <td>${row.year}</td>
-          <td>${row.author}</td>
-          <td>${row.os}</td>
-          <td>${row.category}</td>
-          <td style="text-align:center;"><a href="${row.evidenceUrl}" target="_blank">${ICONS.link}</a></td>
-          <td>${row.evidenceName}</td>
-          <td style="text-align:center;">${row.password ? `<div class='copy-container' onclick="copyToClipboard('${row.password}','pw-${i}')">${ICONS.password}<span id="pw-${i}" class="copy-tooltip">${row.password}</span></div>` : ''}</td>
-          <td style="text-align:center;">${row.hash ? `<div class='copy-container' onclick="copyToClipboard('${row.hash}','hash-${i}')">${ICONS.hash}<span id="hash-${i}" class="copy-tooltip">${row.hash}</span></div>` : ''}</td>
-          <td>${row.event}</td>
-          <td style="text-align:center;"><a href="${row.infoUrl}" target="_blank">${ICONS.info}</a></td>
-        </tr>`).join('');
+          <th data-sort="year">Year</th>
+          <th data-sort="author">Author</th>
+          <th data-sort="os">OS</th>
+          <th data-sort="category">Category</th>
+          <th>Evidence File</th>
+          <th>Password</th>
+          <th>Hash</th>
+          <th>Event</th>
+          <th>Info</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
 
-      // ✅ Notify action-table that new data is available
-      document.querySelector('action-table').forceUpdate();
+  <div class="footer-section">
+    <div class="powered-by">Powered By</div>
+    <img id="footer-logo-img" alt="Footer Logo">
+    <div class="social-links" id="footer-social-links"></div>
+  </div>
+</div>
+
+<script>
+  const CONFIG = {
+    headerLogo: "theevidencelocker.png",
+    footerLogo: "stark4n6.jpg",
+    social: {
+      website: "https://startme.stark4n6.com/",
+      github: "https://github.com/stark4n6",
+      linkedin: "https://www.linkedin.com/in/kevin-pagano/",
+      x: "https://twitter.com/stark4n6"
     }
+  };
 
-    function initializeUIHandlers() {
-      const toggleBtn = document.getElementById('theme-toggle');
-      const themeIcon = document.getElementById('theme-icon');
-      const htmlEl = document.documentElement;
-      const current = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      if (current === 'dark') { htmlEl.setAttribute('data-theme', 'dark'); themeIcon.textContent = '☀️'; }
+  const ICONS = {
+    password: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>`,
+    hash: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>`,
+    info: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`
+  };
 
-      toggleBtn.addEventListener('click', () => {
-        const isDark = htmlEl.getAttribute('data-theme') === 'dark';
-        htmlEl.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
-        themeIcon.textContent = isDark ? '🌓' : '☀️';
-      });
+  const SOCIAL = {
+    web: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    git: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`,
+    in: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`,
+    x: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>`
+  };
 
-      const filterToggle = document.getElementById('filter-toggle');
-      const filterContainer = document.getElementById('filter-container');
-      const filterIcon = document.getElementById('filter-toggle-icon');
-      const filterText = document.getElementById('filter-toggle-text');
+  function copyToClipboard(text, tooltipId) {
+    navigator.clipboard.writeText(text).then(() => {
+      const tip = document.getElementById(tooltipId);
+      const old = tip.innerText;
+      tip.innerText = "Copied!";
+      tip.classList.add("copied");
+      setTimeout(() => { tip.innerText = old; tip.classList.remove("copied"); }, 1500);
+    });
+  }
 
-      filterToggle.addEventListener('click', () => {
-        filterContainer.classList.toggle('hidden');
-        const hidden = filterContainer.classList.contains('hidden');
-        filterIcon.textContent = hidden ? '▶️' : '🔽';
-        filterText.textContent = hidden ? 'Show Filters' : 'Hide Filters';
+  let allData = [], sortKey=null, sortDir=1;
+  async function loadData() {
+    const res = await fetch("data.json");
+    allData = await res.json();
+    render(allData);
+  }
+
+  function render(data) {
+    const tbody = document.getElementById("table-body");
+    tbody.innerHTML = data.map((d,i)=>`
+      <tr>
+        <td>${d.year}</td>
+        <td>${d.author}</td>
+        <td>${d.os}</td>
+        <td>${d.category}</td>
+        <td><a href="${d.evidenceUrl}" target="_blank">${d.evidenceName}</a></td>
+        <td>${d.password ? `<div class="copy-container" onclick="copyToClipboard('${d.password}','pw-${i}')">${ICONS.password}<span id="pw-${i}" class="copy-tooltip">${d.password}</span></div>` : ""}</td>
+        <td>${d.hash ? `<div class="copy-container" onclick="copyToClipboard('${d.hash}','hash-${i}')">${ICONS.hash}<span id="hash-${i}" class="copy-tooltip">${d.hash}</span></div>` : ""}</td>
+        <td>${d.event}</td>
+        <td>${d.infoUrl ? `<a href="${d.infoUrl}" target="_blank" title="${d.infoUrl}">${ICONS.info}</a>` : ""}</td>
+      </tr>`).join("");
+  }
+
+  function applyFilters() {
+    const y=document.getElementById("filter-year").value.trim();
+    const a=document.getElementById("filter-author").value.trim().toLowerCase();
+    const o=document.getElementById("filter-os").value.trim().toLowerCase();
+    const c=document.getElementById("filter-category").value.trim().toLowerCase();
+    const s=document.getElementById("search-global").value.trim().toLowerCase();
+
+    let filtered=allData.filter(d=>
+      (!y||String(d.year).includes(y))&&(!a||d.author.toLowerCase().includes(a))&&(!o||d.os.toLowerCase().includes(o))&&(!c||d.category.toLowerCase().includes(c))&&(!s||Object.values(d).some(v=>String(v).toLowerCase().includes(s)))
+    );
+    if(sortKey){
+      filtered.sort((a,b)=>{
+        if(a[sortKey]<b[sortKey])return-1*sortDir;
+        if(a[sortKey]>b[sortKey])return 1*sortDir;
+        return 0;
       });
     }
+    render(filtered);
+  }
 
-    initializeUIHandlers();
-    initializeApp().catch(err => console.error("Failed to initialize app:", err));
-  </script>
+  ["search-global","filter-year","filter-author","filter-os","filter-category"].forEach(id=>document.getElementById(id).addEventListener("input",applyFilters));
+  document.getElementById("clear-filters").addEventListener("click",()=>{["search-global","filter-year","filter-author","filter-os","filter-category"].forEach(id=>document.getElementById(id).value="");applyFilters();});
+  document.querySelectorAll("th[data-sort]").forEach(th=>th.addEventListener("click",()=>{const key=th.dataset.sort;sortDir=(sortKey===key)?-sortDir:1;sortKey=key;applyFilters();}));
+  
+  document.getElementById("theme-toggle").addEventListener("click",()=>{const html=document.documentElement;const dark=html.getAttribute("data-theme")==="dark";html.setAttribute("data-theme",dark?"light":"dark");localStorage.setItem("theme",dark?"light":"dark");document.getElementById("theme-icon").textContent=dark?"🌓":"☀️";});
+
+  function setupUI() {
+    document.getElementById("header-logo-img").src = CONFIG.headerLogo;
+    document.getElementById("footer-logo-img").src = CONFIG.footerLogo;
+    const S=CONFIG.social;
+    const sHTML=`<a href="${S.website}" target="_blank" class="social-icon">${SOCIAL.web}</a><a href="${S.github}" target="_blank" class="social-icon">${SOCIAL.git}</a><a href="${S.linkedin}" target="_blank" class="social-icon">${SOCIAL.in}</a><a href="${S.x}" target="_blank" class="social-icon">${SOCIAL.x}</a>`;
+    document.getElementById("header-social-links").innerHTML=sHTML;
+    document.getElementById("footer-social-links").innerHTML=sHTML;
+
+    // --- THIS IS THE NEW THEME LOGIC ---
+    const html=document.documentElement;
+    const themeIcon = document.getElementById("theme-icon");
+    // Get saved theme OR default to 'dark'
+    const currentTheme = localStorage.getItem("theme") || "dark"; 
+    html.setAttribute("data-theme", currentTheme);
+    themeIcon.textContent = (currentTheme === "dark") ? "☀️" : "🌓";
+    // --- END NEW THEME LOGIC ---
+  }
+
+  setupUI(); loadData();
+</script>
 </body>
 </html>
