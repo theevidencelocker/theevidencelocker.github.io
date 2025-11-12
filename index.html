@@ -61,12 +61,12 @@
 
     .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
     
-    /* --- THIS BLOCK WAS MODIFIED --- */
     .header-row { 
       display: grid; /* Use Grid instead of Flex */
       grid-template-columns: 1fr auto 1fr; /* Left (flexible), Center (auto-fit), Right (flexible) */
       align-items: start; /* Align items to the top */
       width: 100%; 
+    }
     #header-logo-img { 
       max-width: 100%; 
       max-height: 200px;
@@ -83,7 +83,6 @@
       gap: 15px; 
       z-index: 10;
     }
-    /* --- END OF MODIFIED BLOCK --- */
 
     .header-info-stack {
       display: flex;
@@ -178,17 +177,16 @@
       margin-bottom: 10px;
     }
     
-    /* --- THIS BLOCK WAS MODIFIED to work with the new Grid layout --- */
     @media (max-width: 768px) {
       .header-row {
-        display: flex; /* Revert to flexbox for stacking */
+        display: flex;
         flex-direction: column;
         align-items: center;
         gap: 20px;
       }
       
       #header-logo-img {
-        grid-column: auto; /* Reset grid properties */
+        grid-column: auto;
         justify-self: auto;
       }
 
@@ -227,7 +225,7 @@
 
   <div id="filter-container">
     <div class="filters-grid">
-      <label>Search:<input type="text" id="search-global" placeholder="Search..."></label>
+      <label>Global Search:<input type="text" id="search-global" placeholder="Global Search"></label>
       <label>Year:<input type="text" id="filter-year" placeholder="Filter Year"></label>
       <label>Author:<input type="text" id="filter-author" placeholder="Filter Author"></label>
       <label>OS:<input type="text" id="filter-os" placeholder="Filter OS"></label>
