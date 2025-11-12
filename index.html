@@ -62,8 +62,40 @@
     .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
     .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
     #header-logo-img { max-width: 100%; max-height: 200px; }
-    .header-controls { position: absolute; right: 0; top: 0; display: flex; align-items: center; gap: 15px; }
-    #theme-toggle { background: none; border: 2px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 20px; cursor: pointer; }
+    
+    /* --- THIS RULE WAS MODIFIED --- */
+    .header-controls { 
+      position: absolute; 
+      right: 0; 
+      top: 0; 
+      display: flex; 
+      align-items: flex-start; /* Aligns items to the top */
+      gap: 15px; 
+    }
+    /* --- THIS RULE WAS ADDED --- */
+    .header-info-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; /* Aligns content to the right */
+      gap: 6px; /* Space between social links and date */
+    }
+    /* --- THIS RULE WAS ADDED --- */
+    .last-updated-text {
+      font-size: 0.75rem;
+      color: var(--icon);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    #theme-toggle { 
+      background: none; 
+      border: 2px solid var(--border); 
+      color: var(--text); 
+      padding: 6px 10px; 
+      border-radius: 20px; 
+      cursor: pointer; 
+      margin-top: 2px; /* Small adjustment for alignment */
+    }
     .social-links { display: flex; gap: 15px; justify-content: center; }
     .social-icon { color: var(--text); transition: color 0.2s, transform 0.2s; display: flex; }
     .social-icon:hover { color: var(--link); transform: scale(1.1); }
@@ -92,7 +124,6 @@
       flex-direction: column;
       text-align: center;
     }
-    /* --- THIS RULE WAS MODIFIED --- */
     .filters-grid input { 
       margin-top: 5px; 
       padding: 8px; 
@@ -100,7 +131,7 @@
       border-radius: 4px; 
       background: var(--input); 
       color: var(--text);
-      text-align: center; /* This centers placeholder and typed text */
+      text-align: center;
     }
 
     .table-responsive { overflow-x: auto; }
@@ -144,7 +175,10 @@
     <div class="header-row">
       <img id="header-logo-img" alt="Header Logo">
       <div class="header-controls">
-        <div class="social-links" id="header-social-links"></div>
+        <div class="header-info-stack">
+          <div class="social-links" id="header-social-links"></div>
+          <div id="last-updated" class="last-updated-text"></div>
+        </div>
         <button id="theme-toggle"><span id="theme-icon">🌓</span></button>
       </div>
     </div>
@@ -224,7 +258,8 @@
 
   let allData = [], sortKey=null, sortDir=1;
   async function loadData() {
-    const res = await fetch("data.json");
+    // Add cache-busting query parameter to data.json
+    const res = await fetch(`data.json?v=${new Date().getTime()}`);
     allData = await res.json();
     render(allData);
   }
@@ -279,17 +314,28 @@
     document.getElementById("header-social-links").innerHTML=sHTML;
     document.getElementById("footer-social-links").innerHTML=sHTML;
 
-    // --- THIS IS THE NEW THEME LOGIC ---
+    // --- THIS BLOCK WAS ADDED ---
+    try {
+      const lastUpdated = new Date(document.lastModified);
+      const year = lastUpdated.getFullYear();
+      const month = String(lastUpdated.getMonth() + 1).padStart(2, '0');
+      const day = String(lastUpdated.getDate()).padStart(2, '0');
+      document.getElementById("last-updated").textContent = `Last Updated: ${year}-${month}-${day}`;
+    } catch (e) {
+      console.error("Could not set last updated date:", e);
+      document.getElementById("last-updated").textContent = "";
+    }
+    // --- END BLOCK ---
+
     const html=document.documentElement;
     const themeIcon = document.getElementById("theme-icon");
-    // Get saved theme OR default to 'dark'
     const currentTheme = localStorage.getItem("theme") || "dark"; 
     html.setAttribute("data-theme", currentTheme);
     themeIcon.textContent = (currentTheme === "dark") ? "☀️" : "🌓";
-    // --- END NEW THEME LOGIC ---
   }
 
-  setupUI(); loadData();
+  setupUI(); 
+  loadData();
 </script>
 </body>
 </html>
