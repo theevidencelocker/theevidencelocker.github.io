@@ -60,25 +60,37 @@
     }
 
     .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
-    .header-row { display: flex; justify-content: center; width: 100%; position: relative; }
-    #header-logo-img { max-width: 100%; max-height: 200px; }
     
-    .header-controls { 
-      position: absolute; 
-      right: 0; 
-      top: 0; 
-      display: flex; 
-      align-items: flex-start; /* Aligns items to the top */
-      gap: 15px; 
+    /* --- THIS BLOCK WAS MODIFIED --- */
+    .header-row { 
+      display: grid; /* Use Grid instead of Flex */
+      grid-template-columns: 1fr auto 1fr; /* Left (flexible), Center (auto-fit), Right (flexible) */
+      align-items: start; /* Align items to the top */
+      width: 100%; 
+    #header-logo-img { 
+      max-width: 100%; 
+      max-height: 200px;
+      grid-column: 2; /* Place logo in the center column */
+      justify-self: center; /* Ensure it's centered within that column */
     }
+    .header-controls { 
+      /* position: absolute; is REMOVED */
+      grid-column: 3; /* Place controls in the right column */
+      justify-self: end; /* Align controls to the far right */
+      
+      display: flex; 
+      align-items: flex-start;
+      gap: 15px; 
+      z-index: 10;
+    }
+    /* --- END OF MODIFIED BLOCK --- */
 
     .header-info-stack {
       display: flex;
       flex-direction: column;
-      align-items: flex-end; /* Aligns content to the right */
-      gap: 6px; /* Space between social links and date */
+      align-items: flex-end;
+      gap: 6px;
     }
-
     .last-updated-text {
       font-size: 0.75rem;
       color: var(--icon);
@@ -93,7 +105,7 @@
       padding: 6px 10px; 
       border-radius: 20px; 
       cursor: pointer; 
-      margin-top: 2px; /* Small adjustment for alignment */
+      margin-top: 2px;
     }
     .social-links { display: flex; gap: 15px; justify-content: center; }
     .social-icon { color: var(--text); transition: color 0.2s, transform 0.2s; display: flex; }
@@ -165,6 +177,35 @@
       margin-top: 10px;
       margin-bottom: 10px;
     }
+    
+    /* --- THIS BLOCK WAS MODIFIED to work with the new Grid layout --- */
+    @media (max-width: 768px) {
+      .header-row {
+        display: flex; /* Revert to flexbox for stacking */
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+      
+      #header-logo-img {
+        grid-column: auto; /* Reset grid properties */
+        justify-self: auto;
+      }
+
+      .header-controls {
+        position: static;
+        grid-column: auto;
+        justify-self: auto;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 20px;
+      }
+      
+      .header-info-stack {
+        align-items: center;
+      }
+    }
   </style>
 </head>
 
@@ -173,6 +214,7 @@
   <div class="header-section">
     <div class="header-row">
       <img id="header-logo-img" alt="Header Logo">
+      
       <div class="header-controls">
         <div class="header-info-stack">
           <div class="social-links" id="header-social-links"></div>
@@ -257,7 +299,6 @@
 
   let allData = [], sortKey=null, sortDir=1;
   async function loadData() {
-    // Add cache-busting query parameter to data.json
     const res = await fetch(`data.json?v=${new Date().getTime()}`);
     allData = await res.json();
     render(allData);
