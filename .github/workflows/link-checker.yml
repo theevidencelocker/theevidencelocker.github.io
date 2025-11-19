@@ -20,13 +20,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Lychee Link Checker
+      - name: Extract only download URLs
+        run: |
+          jq -r '.[].evidenceUrl' data.json > links.txt
+          echo "Extracted $(wc -l < links.txt) links"
+
+      - name: Run Lychee Link Checker (downloads only)
         uses: lycheeverse/lychee-action@v1.10.0
         with:
-          # --max-concurrency 1: Only check one link at a time (throttles the speed)
-          # --max-retries 3: If it fails, try 3 more times
-          # --retry-wait-time 10: Wait 10 seconds between retries
-          args: --verbose --no-progress --max-concurrency 1 --max-retries 3 --retry-wait-time 10 './data.json' --exclude 'https://thebinaryhick.blog'
+          # Read only the extracted URLs; no crawling of blogs or other fields.
+          args: --verbose --no-progress --max-concurrency 1 --max-retries 3 --retry-wait-time 10 links.txt
           fail: true
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
