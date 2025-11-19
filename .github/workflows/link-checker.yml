@@ -1,0 +1,32 @@
+name: Check Links in Data.json
+
+on:
+  # Runs on every push to the main branch
+  push:
+    branches: [ "main" ]
+  # Runs on every pull request targeting main
+  pull_request:
+    branches: [ "main" ]
+  # Runs daily at midnight UTC to catch links that rot over time
+  schedule:
+    - cron: "0 0 * * *"
+  # Allows you to run this manually from the Actions tab for testing
+  workflow_dispatch:
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Lychee Link Checker
+        uses: lycheeverse/lychee-action@v1.10.0
+        with:
+          # explicitly point to data.json
+          # --verbose: detailed output
+          # --no-progress: cleaner logs for CI
+          args: --verbose --no-progress './data.json'
+          
+          # Fail the pipeline if broken links are found (true/false)
+          fail: true
