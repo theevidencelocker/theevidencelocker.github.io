@@ -298,6 +298,16 @@
   let allData = [], sortKey=null, sortDir=1;
   async function loadData() {
     const res = await fetch(`data.json?v=${new Date().getTime()}`);
+    
+    const lastModHeader = res.headers.get('Last-Modified');
+    if (lastModHeader) {
+      const dateObj = new Date(lastModHeader);
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      document.getElementById("last-updated").textContent = `Last Updated: ${year}-${month}-${day}`;
+    }
+
     allData = await res.json();
     render(allData);
   }
@@ -351,17 +361,6 @@
     const sHTML=`<a href="${S.website}" target="_blank" class="social-icon">${SOCIAL.web}</a><a href="${S.github}" target="_blank" class="social-icon">${SOCIAL.git}</a><a href="${S.linkedin}" target="_blank" class="social-icon">${SOCIAL.in}</a><a href="${S.x}" target="_blank" class="social-icon">${SOCIAL.x}</a>`;
     document.getElementById("header-social-links").innerHTML=sHTML;
     document.getElementById("footer-social-links").innerHTML=sHTML;
-
-    try {
-      const lastUpdated = new Date(document.lastModified);
-      const year = lastUpdated.getFullYear();
-      const month = String(lastUpdated.getMonth() + 1).padStart(2, '0');
-      const day = String(lastUpdated.getDate()).padStart(2, '0');
-      document.getElementById("last-updated").textContent = `Last Updated: ${year}-${month}-${day}`;
-    } catch (e) {
-      console.error("Could not set last updated date:", e);
-      document.getElementById("last-updated").textContent = "";
-    }
 
     const html=document.documentElement;
     const themeIcon = document.getElementById("theme-icon");
