@@ -48,7 +48,7 @@
       transition: background 0.3s, color 0.3s;
     }
     .container {
-      max-width: 1600px;
+      max-width: 1800px;
       margin: auto;
       background: var(--container);
       border-radius: 8px;
@@ -242,10 +242,11 @@
           <th data-sort="author">Author</th>
           <th data-sort="os">OS</th>
           <th data-sort="category">Category</th>
-          <th>Evidence File</th>
+          <th data-sort="category">Evidence File</th>
+		  <th data-sort="category">File Size</th>
           <th>Password</th>
           <th>Hash</th>
-          <th>Event</th>
+          <th data-sort="category">Event</th>
           <th>Info</th>
         </tr>
       </thead>
@@ -321,6 +322,7 @@
         <td>${d.os}</td>
         <td>${d.category}</td>
         <td><a href="${d.evidenceUrl}" target="_blank">${d.evidenceName}</a></td>
+		<td>${d.filesize}</td>
         <td>${d.password ? `<div class="copy-container" onclick="copyToClipboard('${d.password}','pw-${i}')">${ICONS.password}<span id="pw-${i}" class="copy-tooltip">${d.password}</span></div>` : ""}</td>
         <td>${d.hash ? `<div class="copy-container" onclick="copyToClipboard('${d.hash}','hash-${i}')">${ICONS.hash}<span id="hash-${i}" class="copy-tooltip">${d.hash}</span></div>` : ""}</td>
         <td>${d.event}</td>
