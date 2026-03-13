@@ -1,19 +1,6 @@
 [
   {
     "year": 2026,
-    "author": "Binary Confidence",
-    "os": "",
-    "category": "Network Capture",
-    "evidenceUrl": "https://binconf.sharepoint.com/sites/public/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2Fpublic%2FShared%20Documents%2FG2026%2FGuardians2026%2Epcap&parent=%2Fsites%2Fpublic%2FShared%20Documents%2FG2026&p=true&ga=1",
-    "evidenceName": "Guardians2026.pcap",
-    "filesize": "1.2 GB",
-    "password": "",
-    "hash": "AC332F433DB6973226F84371EE24D223",
-    "event": "Guardians 2026",
-    "infoUrl": "https://www.guardians.sk/"
-  },
-  {
-    "year": 2026,
     "author": "HackForge",
     "os": "Windows 10 (19041)",
     "category": "Memory",
