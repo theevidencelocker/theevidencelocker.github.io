@@ -132,7 +132,7 @@
   {
     "year": 2026,
     "author": "MSAB",
-    "os": "Android ",
+    "os": "Android 13",
     "category": "Mobile",
     "evidenceUrl": "https://msab26.hexordiactf.com/SamsungS20.zip",
     "evidenceName": "SamsungS20.zip",
@@ -145,7 +145,7 @@
   {
     "year": 2026,
     "author": "MSAB",
-    "os": "iOS",
+    "os": "iOS 18.7",
     "category": "Mobile",
     "evidenceUrl": "https://msab26.hexordiactf.com/iPhone12.zip",
     "evidenceName": "iPhone12.zip",
