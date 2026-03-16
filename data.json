@@ -87,7 +87,7 @@
     "filesize": "39.6 GB",
     "password": "",
     "hash": "5AC732F39B5C7E56703E40FEAB494656",
-    "event": "MVS CTF 2026",
+    "event": "Magnet Virtual Summit CTF 2026",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2026-magnet-virtual-summit-ctf/"
   },
   {
@@ -100,7 +100,7 @@
     "filesize": "9.67 GB",
     "password": "",
     "hash": "23075789FE93781A9A99E1DB952F47C5",
-    "event": "MVS CTF 2026",
+    "event": "Magnet Virtual Summit CTF 2026",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2026-magnet-virtual-summit-ctf/"
   },
   {
@@ -113,7 +113,7 @@
     "filesize": "20.5 GB",
     "password": "",
     "hash": "BEE600ECC8086325211A4AB5CBF5FF47",
-    "event": "MVS CTF 2026",
+    "event": "Magnet Virtual Summit CTF 2026",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2026-magnet-virtual-summit-ctf/"
   },
   {
@@ -126,8 +126,34 @@
     "filesize": "2.49 MB",
     "password": "",
     "hash": "70A3E1C9A0B98ABAE155261A90D3C4EB",
-    "event": "MVS CTF 2026",
+    "event": "Magnet Virtual Summit CTF 2026",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2026-magnet-virtual-summit-ctf/"
+  },
+  {
+    "year": 2026,
+    "author": "MSAB",
+    "os": "Android ",
+    "category": "Mobile",
+    "evidenceUrl": "https://msab26.hexordiactf.com/SamsungS20.zip",
+    "evidenceName": "SamsungS20.zip",
+    "filesize": "36.6 GB",
+    "password": "",
+    "hash": "2F89B1547C442B0AFC3102ED80CE477A",
+    "event": "MSAB Mobile Forensics Digital Summit CTF 2026",
+    "infoUrl": ""
+  },
+  {
+    "year": 2026,
+    "author": "MSAB",
+    "os": "iOS",
+    "category": "Mobile",
+    "evidenceUrl": "https://msab26.hexordiactf.com/iPhone12.zip",
+    "evidenceName": "iPhone12.zip",
+    "filesize": "46.7 GB",
+    "password": "",
+    "hash": "0E1D586E89098EC0EBC4E6C12852F462",
+    "event": "MSAB Mobile Forensics Digital Summit CTF 2026",
+    "infoUrl": ""
   },
   {
     "year": 2025,
@@ -166,7 +192,7 @@
     "password": "B3tty&J0di_Swe@tta_W3aTHa",
     "hash": "D2E42194B1B16E35FBB0F84EEF924FB5",
     "event": "Cellebrite CTF 2025",
-    "infoUrl": ""
+    "infoUrl": "https://cellebrite.com/en/thats-a-wrap-on-the-2025-capture-the-flag/"
   },
   {
     "year": 2025,
@@ -179,7 +205,7 @@
     "password": "B3tty&J0di_Swe@tta_W3aTHa",
     "hash": "3DBE94D72CB6C76F03E0995F1F20E55E",
     "event": "Cellebrite CTF 2025",
-    "infoUrl": ""
+    "infoUrl": "https://cellebrite.com/en/thats-a-wrap-on-the-2025-capture-the-flag/"
   },
   {
     "year": 2025,
@@ -192,7 +218,7 @@
     "password": "B3tty&J0di_Swe@tta_W3aTHa",
     "hash": "4D455F968C61EC43960AB6B66B55AC4A",
     "event": "Cellebrite CTF 2025",
-    "infoUrl": ""
+    "infoUrl": "https://cellebrite.com/en/thats-a-wrap-on-the-2025-capture-the-flag/"
   },
   {
     "year": 2025,
@@ -204,7 +230,7 @@
     "filesize": "2.41 MB",
     "password": "",
     "hash": "F5324A637AC30BAB90DD5BCE5F01FAB2",
-    "event": "MVS CTF 2025",
+    "event": "Magnet Virtual Summit CTF 2025",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2025-magnet-virtual-summit-ctf/"
   },
   {
@@ -217,7 +243,7 @@
     "filesize": "15.3 MB",
     "password": "",
     "hash": "1219EBC7A3E663EBEB4978A020C2BFBB",
-    "event": "MVS CTF 2025",
+    "event": "Magnet Virtual Summit CTF 2025",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2025-magnet-virtual-summit-ctf/"
   },
   {
@@ -230,7 +256,7 @@
     "filesize": "6.71 GB",
     "password": "",
     "hash": "76077DCE06C68D8EC5505173180E0A5F",
-    "event": "MVS CTF 2025",
+    "event": "Magnet Virtual Summit CTF 2025",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2025-magnet-virtual-summit-ctf/"
   },
   {
@@ -243,7 +269,7 @@
     "filesize": "1.98 GB",
     "password": "",
     "hash": "9D6A0BE7DE550F95569449374C73C7C0",
-    "event": "MVS CTF 2025",
+    "event": "Magnet Virtual Summit CTF 2025",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2025-magnet-virtual-summit-ctf/"
   },
   {
@@ -256,7 +282,7 @@
     "filesize": "10.7 GB",
     "password": "",
     "hash": "A8E9DF3FC94C5C66F8CA8824773C0332",
-    "event": "MVS CTF 2025",
+    "event": "Magnet Virtual Summit CTF 2025",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2025-magnet-virtual-summit-ctf/"
   },
   {
@@ -269,7 +295,7 @@
     "filesize": "37 GB",
     "password": "",
     "hash": "ACF01700E99D1FF4ABF17C74EF932F21",
-    "event": "MVS CTF 2025",
+    "event": "Magnet Virtual Summit CTF 2025",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2025-magnet-virtual-summit-ctf/"
   },
   {
@@ -425,7 +451,7 @@
     "filesize": "32.4 GB",
     "password": "",
     "hash": "56EBD62968D37B67E656AD58EEE7A985",
-    "event": "MVS CTF 2024",
+    "event": "Magnet Virtual Summit CTF 2024",
     "infoUrl": "https://www.magnetforensics.com/blog/2024-magnet-virtual-summit-ctf-winners-and-another-chance-to-play/"
   },
   {
@@ -438,7 +464,7 @@
     "filesize": "25.5 GB",
     "password": "",
     "hash": "11B304C12314D2CE35219CAB0C98569E",
-    "event": "MVS CTF 2024",
+    "event": "Magnet Virtual Summit CTF 2024",
     "infoUrl": "https://www.magnetforensics.com/blog/2024-magnet-virtual-summit-ctf-winners-and-another-chance-to-play/"
   },
   {
@@ -451,7 +477,7 @@
     "filesize": "173 KB",
     "password": "",
     "hash": "A44036DD301A916CBBD95EB334885357",
-    "event": "MVS CTF 2024",
+    "event": "Magnet Virtual Summit CTF 2024",
     "infoUrl": "https://www.magnetforensics.com/blog/2024-magnet-virtual-summit-ctf-winners-and-another-chance-to-play/"
   },
   {
@@ -464,7 +490,7 @@
     "filesize": "1.98 MB",
     "password": "",
     "hash": "B370D4C888225C6418FDD1FFBD83582C",
-    "event": "MVS CTF 2024",
+    "event": "Magnet Virtual Summit CTF 2024",
     "infoUrl": "https://www.magnetforensics.com/blog/2024-magnet-virtual-summit-ctf-winners-and-another-chance-to-play/"
   },
   {
@@ -659,7 +685,7 @@
     "filesize": "49 GB",
     "password": "",
     "hash": "8CF0C007391F4A72DDC12A570A115B46",
-    "event": "MVS CTF 2023",
+    "event": "Magnet Virtual Summit CTF 2023",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-mvs-2023-ctf-winners-and-a-new-ctf-challenge/"
   },
   {
@@ -672,7 +698,7 @@
     "filesize": "25.1 GB",
     "password": "",
     "hash": "7842C35856FF5B52919A8F878EFEA296",
-    "event": "MVS CTF 2023",
+    "event": "Magnet Virtual Summit CTF 2023",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-mvs-2023-ctf-winners-and-a-new-ctf-challenge/"
   },
   {
@@ -685,7 +711,7 @@
     "filesize": "9.95 GB",
     "password": "",
     "hash": "067606649297D7ADCF6082E5ED0ACBB9 ",
-    "event": "MVS CTF 2023",
+    "event": "Magnet Virtual Summit CTF 2023",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-mvs-2023-ctf-winners-and-a-new-ctf-challenge/"
   },
   {
@@ -698,7 +724,7 @@
     "filesize": "9.10 GB",
     "password": "",
     "hash": "D9EE2D36A5D632C0F694C73F7DEDF878",
-    "event": "MUS CTF 2023",
+    "event": "Magnet User Summit CTF 2023",
     "infoUrl": ""
   },
   {
@@ -802,7 +828,7 @@
     "filesize": "8.86 GB",
     "password": "",
     "hash": "131CF2634BD6907B53D23150D4EA24EA",
-    "event": "MVS CTF 2022",
+    "event": "Magnet Virtual Summit CTF 2022",
     "infoUrl": "https://www.magnetforensics.com/blog/update-on-magnet-summit-2022-capture-the-flag-contests/"
   },
   {
@@ -815,7 +841,7 @@
     "filesize": "4.39 GB",
     "password": "",
     "hash": "4FDC02C7104350B7086F0CEFD8937E52",
-    "event": "MUS CTF 2022",
+    "event": "Magnet User Summit CTF 2022",
     "infoUrl": ""
   },
   {
@@ -828,7 +854,7 @@
     "filesize": "13.6 GB",
     "password": "",
     "hash": "05720D0211578C358D86AECABAD0B9CF",
-    "event": "MUS CTF 2022",
+    "event": "Magnet User Summit CTF 2022",
     "infoUrl": ""
   },
   {
@@ -841,7 +867,7 @@
     "filesize": "2.46 MB",
     "password": "",
     "hash": "EDF13484D65D499844074AD3315D9F87",
-    "event": "MVS CTF 2022",
+    "event": "Magnet Virtual Summit CTF 2022",
     "infoUrl": "https://www.magnetforensics.com/blog/update-on-magnet-summit-2022-capture-the-flag-contests/"
   },
   {
@@ -854,7 +880,7 @@
     "filesize": "35.1 GB",
     "password": "",
     "hash": "B28EE46B0CD62165D82AE41ED852D3BF",
-    "event": "MVS CTF 2022",
+    "event": "Magnet Virtual Summit CTF 2022",
     "infoUrl": "https://www.magnetforensics.com/blog/update-on-magnet-summit-2022-capture-the-flag-contests/"
   },
   {
@@ -1036,7 +1062,7 @@
     "filesize": "5.39 GB",
     "password": "",
     "hash": "DB9749679B1A4042C3B27DC1ADA69C24",
-    "event": "MVS CTF 2021",
+    "event": "Magnet Virtual Summit CTF 2021",
     "infoUrl": ""
   },
   {
@@ -1049,7 +1075,7 @@
     "filesize": "75.6 GB",
     "password": "",
     "hash": "7E997BDAB0F3B2A07D91E384A4A8A382",
-    "event": "MVS CTF 2021",
+    "event": "Magnet Virtual Summit CTF 2021",
     "infoUrl": ""
   },
   {
@@ -1062,7 +1088,7 @@
     "filesize": "4.24 MB",
     "password": "",
     "hash": "F9FE0182AE1145809D472767BD7D4FFC",
-    "event": "MVS CTF 2021",
+    "event": "Magnet Virtual Summit CTF 2021",
     "infoUrl": ""
   },
   {
@@ -1075,7 +1101,7 @@
     "filesize": "390 MB",
     "password": "",
     "hash": "1DD66704DEFD805091A827D67F60D799",
-    "event": "MVS CTF 2021",
+    "event": "Magnet Virtual Summit CTF 2021",
     "infoUrl": ""
   },
   {
@@ -1322,7 +1348,7 @@
     "filesize": "340 MB",
     "password": "",
     "hash": "E11A859F184F5D801BEE27361E0B915A",
-    "event": "MVS CTF 2020",
+    "event": "Magnet User Summit CTF 2019",
     "infoUrl": ""
   },
   {
@@ -1335,7 +1361,7 @@
     "filesize": "8.31 GB",
     "password": "",
     "hash": "3BB6ABB3BF6D09E3E65D20EFC7EC23B1",
-    "event": "MVS CTF 2020",
+    "event": "Magnet Virtual Summit CTF 2020",
     "infoUrl": ""
   },
   {
@@ -1348,7 +1374,7 @@
     "filesize": "1.22 GB",
     "password": "",
     "hash": "2F12C02214492603DF519D2591CFF1DE",
-    "event": "MVS CTF 2020",
+    "event": "Magnet Virtual Summit CTF 2020",
     "infoUrl": ""
   },
   {
@@ -1361,7 +1387,7 @@
     "filesize": "11.9 GB",
     "password": "",
     "hash": "8134DFB212393099573AB5C3123172F3",
-    "event": "MVS CTF 2020",
+    "event": "Magnet Virtual Summit CTF 2020",
     "infoUrl": ""
   },
   {
@@ -1374,7 +1400,7 @@
     "filesize": "27.3 GB",
     "password": "",
     "hash": "C3A9D80729935A52B81ECDDB8CDA7EF6",
-    "event": "MVS CTF 2020",
+    "event": "Magnet Virtual Summit CTF 2020",
     "infoUrl": ""
   },
   {
@@ -1478,7 +1504,7 @@
     "filesize": "183 MB",
     "password": "",
     "hash": "FF64723CD05A692E4D49D71A610945DC",
-    "event": "MUS CTF 2019",
+    "event": "Magnet User Summit CTF 2019",
     "infoUrl": ""
   },
   {
@@ -1491,7 +1517,7 @@
     "filesize": "2.08 MB",
     "password": "",
     "hash": "A9196A3219FED097304C597B52F1A4D0",
-    "event": "MUS CTF 2019",
+    "event": "Magnet User Summit CTF 2019",
     "infoUrl": ""
   },
   {
@@ -1504,7 +1530,7 @@
     "filesize": "9.89 GB",
     "password": "",
     "hash": "F6A8DA3343E7C9C766C9BC520F33BEB6",
-    "event": "MUS CTF 2019",
+    "event": "Magnet User Summit CTF 2019",
     "infoUrl": ""
   },
   {
@@ -1517,7 +1543,7 @@
     "filesize": "29.4 GB",
     "password": "",
     "hash": "BED3B3DDECE20D136A56AA653F0DE608",
-    "event": "MUS CTF 2018",
+    "event": "Magnet User Summit CTF 2018",
     "infoUrl": ""
   },
   {
@@ -1530,7 +1556,7 @@
     "filesize": "1.45 GB",
     "password": "",
     "hash": "C63C46A243CB93915F865AE82C1EF9B3",
-    "event": "MUS CTF 2018",
+    "event": "Magnet User Summit CTF 2018",
     "infoUrl": ""
   },
   {
