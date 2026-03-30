@@ -79,6 +79,19 @@
   },
   {
     "year": 2026,
+    "author": "Hal Pomeranz",
+    "os": "Linux",
+    "category": "Triage / Memory",
+    "evidenceUrl": "https://deerrunassoc-my.sharepoint.com/personal/hal_deer-run_com/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fhal%5Fdeer%2Drun%5Fcom%2FDocuments%2FLinux%20Scenarios%2Fuac%2Dvbox%2Dlinux%2D20260324234043%2Etar%2Egz&parent=%2Fpersonal%2Fhal%5Fdeer%2Drun%5Fcom%2FDocuments%2FLinux%20Scenarios&ga=1",
+    "evidenceName": "uac-vbox-linux-20260324234043.tar.gz",
+    "filesize": "5.78 GB",
+    "password": "",
+    "hash": "DDC894D978FFFD4F722539DD52DFD00F",
+    "event": "Linux Forensic Scenario - Righteous IT",
+    "infoUrl": "https://righteousit.com/2026/03/27/linux-forensic-scenario/"
+  },
+  {
+    "year": 2026,
     "author": "Hexordia",
     "os": "macOS 15.4",
     "category": "Computer",
@@ -140,7 +153,7 @@
     "password": "",
     "hash": "2F89B1547C442B0AFC3102ED80CE477A",
     "event": "MSAB Mobile Forensics Digital Summit CTF 2026",
-    "infoUrl": ""
+    "infoUrl": "https://www.hexordia.com/blog/2026-msab-ctf-android-questions"
   },
   {
     "year": 2026,
@@ -153,7 +166,7 @@
     "password": "",
     "hash": "0E1D586E89098EC0EBC4E6C12852F462",
     "event": "MSAB Mobile Forensics Digital Summit CTF 2026",
-    "infoUrl": ""
+    "infoUrl": "https://www.hexordia.com/blog/2026-msab-ctf-ios-questions"
   },
   {
     "year": 2025,
@@ -297,6 +310,32 @@
     "hash": "ACF01700E99D1FF4ABF17C74EF932F21",
     "event": "Magnet Virtual Summit CTF 2025",
     "infoUrl": "https://www.magnetforensics.com/blog/announcing-the-winners-of-the-2025-magnet-virtual-summit-ctf/"
+  },
+  {
+    "year": 2025,
+    "author": "Mjolnir Security",
+    "os": "Windows 10 Enterprise (19405)",
+    "category": "Memory",
+    "evidenceUrl": "https://f002.backblazeb2.com/file/mjolnirtraining/TH%202025/Nov25-TH25-2-memdump.mem",
+    "evidenceName": "Nov25-TH25-2-memdump.mem",
+    "filesize": "9.0 GB",
+    "password": "",
+    "hash": "0DCCD800639D8C14A547ACC3EA531144",
+    "event": "2025 Threat Hunting Workshop - Mjolnir Security",
+    "infoUrl": "https://cfreds.nist.gov/all/MjolnirSecurity/2025ThreatHuntingWorkshop"
+  },
+  {
+    "year": 2025,
+    "author": "Mjolnir Security",
+    "os": "Windows 10 Enterprise (19405)",
+    "category": "Memory",
+    "evidenceUrl": "https://f002.backblazeb2.com/file/mjolnirtraining/TH%202025/Nov17memdump.7z",
+    "evidenceName": "Nov17memdump.7z",
+    "filesize": "1.84 GB",
+    "password": "",
+    "hash": "DAE8C48C8D388B25903C6323B83D9491",
+    "event": "2025 Threat Hunting Workshop - Mjolnir Security",
+    "infoUrl": "https://cfreds.nist.gov/all/MjolnirSecurity/2025ThreatHuntingWorkshop"
   },
   {
     "year": 2025,
@@ -546,6 +585,19 @@
     "infoUrl": "https://cfreds.nist.gov/all/MSAB/TheStockholmStealersTestData"
   },
   {
+    "year": 2024,
+    "author": "The Open University",
+    "os": "Windows Server 2022 Standard (20348)",
+    "category": "Server",
+    "evidenceUrl": "https://ordo.open.ac.uk/ndownloader/articles/26038642/versions/1",
+    "evidenceName": "26038642.zip",
+    "filesize": "10.1 GB",
+    "password": "",
+    "hash": "D59A08766E525746C8382B12E4DB175F",
+    "event": "Compromised Windows Server 2022 (Simulation)",
+    "infoUrl": "https://cfreds.nist.gov/all/BenjaminDonnachie/CompromisedWindowsServer2022simulation"
+  },
+  {
     "year": 2023,
     "author": "Ali Hadi",
     "os": "Windows",
@@ -769,7 +821,7 @@
   {
     "year": 2022,
     "author": "Belkasoft",
-    "os": "Linux Ubuntu 20.04.2 LTS",
+    "os": "Linux (Ubuntu 20.04.2 LTS)",
     "category": "Computer",
     "evidenceUrl": "https://dl.spbctf.com/Belkasoft_CTF_Kidnapper_Case.7z",
     "evidenceName": "Belkasoft_CFT_Kidnapper_Case.7z",
@@ -847,7 +899,7 @@
   {
     "year": 2022,
     "author": "Magnet Forensics",
-    "os": "Linux Ubuntu 21.10",
+    "os": "Linux (Ubuntu 21.10)",
     "category": "Computer",
     "evidenceUrl": "https://digitalcorpora.s3.amazonaws.com/corpora/scenarios/magnet/2022%20CTF%20-%20Linux.7z",
     "evidenceName": "2022 CTF - Linux.7z",
@@ -938,7 +990,7 @@
   {
     "year": 2021,
     "author": "Belkasoft",
-    "os": "Linux Ubuntu 18.04.5 LTS",
+    "os": "Linux (Ubuntu 18.04.5 LTS)",
     "category": "Computer",
     "evidenceUrl": "https://dl.spbctf.com/BelkaCTFJune_DDCASE_EXH18.7z",
     "evidenceName": "BelkaCTFJune_DDCASE_EXH18.7z",
@@ -1457,6 +1509,32 @@
   },
   {
     "year": 2019,
+    "author": "Digital Corpora",
+    "os": "Android 6.0.1",
+    "category": "Mobile",
+    "evidenceUrl": "https://digitalcorpora.s3.amazonaws.com/corpora/scenarios/2019-owl/Nexus5-Full.zip",
+    "evidenceName": "Nexus5-Full.zip",
+    "filesize": "1.79 GB",
+    "password": "",
+    "hash": "8952F8178FEF64A21A2CA0806CE2FB57",
+    "event": "Owl Scenario",
+    "infoUrl": "https://digitalcorpora.org/corpora/scenarios/2019-owl/"
+  },
+  {
+    "year": 2019,
+    "author": "Digital Corpora",
+    "os": "Windows 10 Pro (14393)",
+    "category": "Computer",
+    "evidenceUrl": "https://digitalcorpora.s3.amazonaws.com/corpora/scenarios/2019-owl/HD1.zip",
+    "evidenceName": "HD1.zip",
+    "filesize": "62.7 GB",
+    "password": "",
+    "hash": "AFDB716C812C1B1BA9BD81CEB79F496B",
+    "event": "Owl Scenario",
+    "infoUrl": "https://digitalcorpora.org/corpora/scenarios/2019-owl/"
+  },
+  {
+    "year": 2019,
     "author": "Josh Hickman",
     "os": "Android 7",
     "category": "Mobile",
@@ -1558,6 +1636,45 @@
     "hash": "C63C46A243CB93915F865AE82C1EF9B3",
     "event": "Magnet User Summit CTF 2018",
     "infoUrl": ""
+  },
+  {
+    "year": 2018,
+    "author": "Thomas Moore",
+    "os": "Windows 10 Education (16299)",
+    "category": "Computer",
+    "evidenceUrl": "https://downloads.digitalcorpora.org/corpora/scenarios/2018-lonewolf/Forensic%20Image%20Files.zip",
+    "evidenceName": "Forensic Image Files.zip",
+    "filesize": "14.7 GB",
+    "password": "",
+    "hash": "09DA7F9B641BC83F0824FB69F8932884",
+    "event": "2018 Lone Wolf Scenario\n",
+    "infoUrl": "https://digitalcorpora.org/corpora/scenarios/2018-lone-wolf-scenario/"
+  },
+  {
+    "year": 2018,
+    "author": "Thomas Moore",
+    "os": "Windows 10 Education (16299)",
+    "category": "Memory",
+    "evidenceUrl": "https://downloads.digitalcorpora.org/corpora/scenarios/2018-lonewolf/LoneWolf_Image_Files/memdump.mem",
+    "evidenceName": "memdump.mem",
+    "filesize": "16.7 GB",
+    "password": "",
+    "hash": "694D1B7C761B50FF5145E0FED4F4F411",
+    "event": "2018 Lone Wolf Scenario\n",
+    "infoUrl": "https://digitalcorpora.org/corpora/scenarios/2018-lone-wolf-scenario/"
+  },
+  {
+    "year": 2018,
+    "author": "Thomas Moore",
+    "os": "Windows 10 Education (16299)",
+    "category": "Loose Files",
+    "evidenceUrl": "https://downloads.digitalcorpora.org/corpora/scenarios/2018-lonewolf/LoneWolf_Image_Files/pagefile.sys",
+    "evidenceName": "pagefile.sys",
+    "filesize": "2.88 GB",
+    "password": "",
+    "hash": "F2299691FC75E667C12998EAC2D2CA8C",
+    "event": "2018 Lone Wolf Scenario\n",
+    "infoUrl": "https://digitalcorpora.org/corpora/scenarios/2018-lone-wolf-scenario/"
   },
   {
     "year": 2011,
