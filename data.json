@@ -1,6 +1,19 @@
 [
   {
     "year": 2026,
+    "author": "Arsenal Recon",
+    "os": "Windows 10 Pro (26200)",
+    "category": "Computer",
+    "evidenceUrl": "https://drive.google.com/file/d/195cj9Rlct60Pa60t6fVzjdqFyBVWSMM5/view",
+    "evidenceName": "TheTechHiveScenario.zip",
+    "filesize": "82.6 GB",
+    "password": "",
+    "hash": "4D1C51022EF3BCCE0ED771F450D07A99",
+    "event": "The Tech Hive Scenario",
+    "infoUrl": "https://www.linkedin.com/posts/arsenal-recon_the-techhive-scenario-is-a-windows-on-arm-activity-7459663608600399872-Lgpl"
+  },
+  {
+    "year": 2026,
     "author": "HackForge",
     "os": "Windows 10 (19041)",
     "category": "Memory",
@@ -1467,6 +1480,19 @@
     "hash": "515113E640F98261A9212FE9FAF0D713",
     "event": "Mini Memory CTF",
     "infoUrl": "https://www.youtube.com/watch?v=JuEv8UleO0U"
+  },
+  {
+    "year": 2020,
+    "author": "TBD",
+    "os": "Windows 7 Ultimate (7601)",
+    "category": "Computer",
+    "evidenceUrl": "https://drive.google.com/file/d/1Fd1pX1r4waRkD6Z2O8J5cRZyeSNU5-SY/view",
+    "evidenceName": "2020JimmyWilson.E01",
+    "filesize": "295 MB",
+    "password": "",
+    "hash": "4193CC3BC7111DDF8BE7A00677F2A2F4",
+    "event": "",
+    "infoUrl": ""
   },
   {
     "year": 2019,
