@@ -2,7 +2,7 @@
   {
     "year": 2026,
     "author": "Arsenal Recon",
-    "os": "Windows 11 Pro (26200)",
+    "os": "Windows 10 Pro (26200)",
     "category": "Computer",
     "evidenceUrl": "https://drive.google.com/file/d/195cj9Rlct60Pa60t6fVzjdqFyBVWSMM5/view",
     "evidenceName": "TheTechHiveScenario.zip",
@@ -182,6 +182,84 @@
     "infoUrl": "https://www.hexordia.com/blog/2026-msab-ctf-ios-questions"
   },
   {
+    "year": 2026,
+    "author": "Nana Sei Anyemedu",
+    "os": "",
+    "category": "Loose Files",
+    "evidenceUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/blob/main/Petroleum%20Theft/FT-GH-2024-PT-0188.E01",
+    "evidenceName": "FT-GH-2024-PT-0188.E01",
+    "filesize": "1.42 MB",
+    "password": "",
+    "hash": "CDF3B57CABEC3B0A0A0BCBB5C1AF886C",
+    "event": "Project Liquid Leak - The Petroleum Tanker Theft Case",
+    "infoUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/tree/main/Petroleum%20Theft"
+  },
+  {
+    "year": 2026,
+    "author": "Nana Sei Anyemedu",
+    "os": "Windows",
+    "category": "Triage / Network Capture",
+    "evidenceUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/blob/main/Ransomware%20Case/Ransomware%20Case.zip",
+    "evidenceName": "Ransomware Case.zip",
+    "filesize": "1.38 MB",
+    "password": "",
+    "hash": "F875B60AB2DF099805978DE9A2DA74EE",
+    "event": "Meridian Financial Services - Ransomware Incident",
+    "infoUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/tree/main/Ransomware%20Case"
+  },
+  {
+    "year": 2026,
+    "author": "Nana Sei Anyemedu",
+    "os": "",
+    "category": "Loose Files",
+    "evidenceUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/blob/main/Organized%20Crime/OC-GH-2024-DR-0312.E01",
+    "evidenceName": "OC-GH-2024-DR-0312.E01",
+    "filesize": "1.88 MB",
+    "password": "",
+    "hash": "3AA32254DCD187A20160B448446A5914",
+    "event": "Project Cross-Border Heavy - Organized Crime",
+    "infoUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/tree/main/Organized%20Crime"
+  },
+  {
+    "year": 2026,
+    "author": "Nana Sei Anyemedu",
+    "os": "Windows",
+    "category": "Triage",
+    "evidenceUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/blob/main/Dirty%20Ledger%20-%20Financial%20Fraud%20Case/HC-GH-2025-FF-0047_PADDO_LAPTOP.E01",
+    "evidenceName": "HC-GH-2025-FF-0047_PADDO_LAPTOP.E01",
+    "filesize": "9.43 MB",
+    "password": "",
+    "hash": "7BE111E0E162C06D3F18889E3AD3C9D7",
+    "event": "Dirty Ledger - Financial Fraud Case",
+    "infoUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/tree/main/Dirty%20Ledger%20-%20Financial%20Fraud%20Case"
+  },
+  {
+    "year": 2026,
+    "author": "Nana Sei Anyemedu",
+    "os": "",
+    "category": "Network Capture",
+    "evidenceUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/blob/main/Darkweb/ShadowMarket.pcapng",
+    "evidenceName": "ShadowMarket.pcapng",
+    "filesize": "41.2 KB",
+    "password": "",
+    "hash": "D2C9595DDBA5400A5ACEF6128CB20347",
+    "event": "Operation Dark Horizon - Darkweb",
+    "infoUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/tree/main/Darkweb"
+  },
+  {
+    "year": 2026,
+    "author": "Nana Sei Anyemedu",
+    "os": "Android 13",
+    "category": "Mobile / Triage",
+    "evidenceUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/blob/main/AnansePay/HC-GH-2025-SF-0089%20MOMO%20FRAUD.zip",
+    "evidenceName": "HC-GH-2025-SF-0089 MOMO FRAUD.zip",
+    "filesize": "494 KB",
+    "password": "",
+    "hash": "4FB046B756CBDD9949143A857D2E9A23",
+    "event": "Operation SIM Shift - AnansePay",
+    "infoUrl": "https://github.com/RedHatPentester/DIGITAL-FORENSICS-CTF-LAB/tree/main/AnansePay"
+  },
+  {
     "year": 2025,
     "author": "Belkasoft",
     "os": "Windows 10 (19041)",
@@ -314,7 +392,7 @@
   {
     "year": 2025,
     "author": "Hexordia",
-    "os": "Windows 11 Home (26100)",
+    "os": "Windows 10 Home (26100)",
     "category": "Computer",
     "evidenceUrl": "https://drive.google.com/file/d/1ImeVi8BzHcuLDOV7LhAle9kRnZOMFb64/view?usp=drive_link",
     "evidenceName": "userbss.ad1",
@@ -1171,6 +1249,19 @@
   },
   {
     "year": 2020,
+    "author": "",
+    "os": "Windows 7 Ultimate (7601)",
+    "category": "Computer",
+    "evidenceUrl": "https://drive.google.com/file/d/1Fd1pX1r4waRkD6Z2O8J5cRZyeSNU5-SY/view",
+    "evidenceName": "2020JimmyWilson.E01",
+    "filesize": "295 MB",
+    "password": "",
+    "hash": "4193CC3BC7111DDF8BE7A00677F2A2F4",
+    "event": "",
+    "infoUrl": ""
+  },
+  {
+    "year": 2020,
     "author": "Abhiram Kumar",
     "os": "Windows 7 Ultimate",
     "category": "Memory",
@@ -1480,19 +1571,6 @@
     "hash": "515113E640F98261A9212FE9FAF0D713",
     "event": "Mini Memory CTF",
     "infoUrl": "https://www.youtube.com/watch?v=JuEv8UleO0U"
-  },
-  {
-    "year": 2020,
-    "author": "TBD",
-    "os": "Windows 7 Ultimate (7601)",
-    "category": "Computer",
-    "evidenceUrl": "https://drive.google.com/file/d/1Fd1pX1r4waRkD6Z2O8J5cRZyeSNU5-SY/view",
-    "evidenceName": "2020JimmyWilson.E01",
-    "filesize": "295 MB",
-    "password": "",
-    "hash": "4193CC3BC7111DDF8BE7A00677F2A2F4",
-    "event": "",
-    "infoUrl": ""
   },
   {
     "year": 2019,
