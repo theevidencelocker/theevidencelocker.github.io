@@ -47,8 +47,11 @@
       padding: 20px;
       transition: background 0.3s, color 0.3s;
     }
+    
     .container {
-      max-width: 1800px;
+      max-width: 98%; 
+      width: 100%;
+      box-sizing: border-box;
       margin: auto;
       background: var(--container);
       border-radius: 8px;
@@ -59,25 +62,49 @@
       min-height: 95vh;
     }
 
+    /* FLOATING LOGO CSS */
+    #floating-logo {
+        position: fixed;
+        top: 30px;
+        left: calc(1vw + 20px); 
+        max-width: 150px; 
+        max-height: 100px;
+        object-fit: contain;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        border-radius: 8px;
+        cursor: pointer;
+        background: var(--container);
+        padding: 5px;
+        border: 1px solid var(--border);
+    }
+    #floating-logo.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
     .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
     
     .header-row { 
-      display: grid; /* Use Grid instead of Flex */
-      grid-template-columns: 1fr auto 1fr; /* Left (flexible), Center (auto-fit), Right (flexible) */
-      align-items: start; /* Align items to the top */
+      display: grid; 
+      grid-template-columns: 1fr auto 1fr; 
+      align-items: start; 
       width: 100%; 
     }
     #header-logo-img { 
       max-width: 100%; 
       max-height: 250px;
-      grid-column: 2; /* Place logo in the center column */
-      justify-self: center; /* Ensure it's centered within that column */
+      grid-column: 2; 
+      justify-self: center; 
     }
     .header-controls { 
-      /* position: absolute; is REMOVED */
-      grid-column: 3; /* Place controls in the right column */
-      justify-self: end; /* Align controls to the far right */
-      
+      grid-column: 3; 
+      justify-self: end; 
       display: flex; 
       align-items: flex-start;
       gap: 15px; 
@@ -144,8 +171,22 @@
       text-align: center;
     }
 
-    .table-responsive { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    /* SCROLLABLE TABLE CONTAINER */
+    .table-responsive { 
+      overflow-x: auto; 
+      overflow-y: auto; 
+      width: 100%; 
+      max-height: 65vh; 
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 0; 
+      table-layout: auto;
+    }
     
     th, td { 
       text-align: center; 
@@ -154,11 +195,17 @@
       vertical-align: middle;
     }
     
+    /* STICKY HEADERS */
     th {
       background: var(--header-bg);
       color: var(--header-text);
       cursor: pointer;
+      position: sticky; 
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 2px -1px rgba(0,0,0,0.4); 
     }
+    
     tbody tr:nth-child(even) { background: var(--alt); }
     tr:hover { background: var(--hover); }
     a { color: var(--link); text-decoration: none; }
@@ -203,11 +250,16 @@
       .header-info-stack {
         align-items: center;
       }
+      
+      #floating-logo { display: none; }
     }
   </style>
 </head>
 
 <body>
+<!-- Floating Logo Element -->
+<img id="floating-logo" alt="The Evidence Locker Floating Logo" title="Scroll to top">
+
 <div class="container">
   <div class="header-section">
     <div class="header-row">
@@ -376,18 +428,46 @@
   document.getElementById("theme-toggle").addEventListener("click",()=>{const html=document.documentElement;const dark=html.getAttribute("data-theme")==="dark";html.setAttribute("data-theme",dark?"light":"dark");localStorage.setItem("theme",dark?"light":"dark");document.getElementById("theme-icon").textContent=dark?"🌓":"☀️";});
 
   function setupUI() {
+    // Set Logo Sources
     document.getElementById("header-logo-img").src = CONFIG.headerLogo;
     document.getElementById("footer-logo-img").src = CONFIG.footerLogo;
+    document.getElementById("floating-logo").src = CONFIG.headerLogo;
+
+    // Load Socials
     const S=CONFIG.social;
     const sHTML=`<a href="${S.website}" target="_blank" class="social-icon">${SOCIAL.web}</a><a href="${S.github}" target="_blank" class="social-icon">${SOCIAL.git}</a><a href="${S.linkedin}" target="_blank" class="social-icon">${SOCIAL.in}</a><a href="${S.x}" target="_blank" class="social-icon">${SOCIAL.x}</a>`;
     document.getElementById("header-social-links").innerHTML=sHTML;
     document.getElementById("footer-social-links").innerHTML=sHTML;
 
+    // Apply Theme
     const html=document.documentElement;
     const themeIcon = document.getElementById("theme-icon");
     const currentTheme = localStorage.getItem("theme") || "dark"; 
     html.setAttribute("data-theme", currentTheme);
     themeIcon.textContent = (currentTheme === "dark") ? "☀️" : "🌓";
+    
+    // Intersection Observer for Floating Logo
+    const headerLogo = document.getElementById("header-logo-img");
+    const floatingLogo = document.getElementById("floating-logo");
+    
+    if (headerLogo && floatingLogo) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    floatingLogo.classList.add("visible");
+                } else {
+                    floatingLogo.classList.remove("visible");
+                }
+            });
+        }, { threshold: 0 });
+        
+        observer.observe(headerLogo);
+
+        // Click floating logo to scroll back up
+        floatingLogo.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
   }
 
   setupUI(); 
