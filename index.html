@@ -195,7 +195,7 @@
       vertical-align: middle;
     }
     
-    /* STICKY HEADERS */
+    /* STICKY HEADERS & SORTING */
     th {
       background: var(--header-bg);
       color: var(--header-text);
@@ -203,8 +203,10 @@
       position: sticky; 
       top: 0;
       z-index: 10;
-      box-shadow: 0 2px 2px -1px rgba(0,0,0,0.4); 
+      box-shadow: 0 2px 2px -1px rgba(0,0,0,0.4);
+      user-select: none;
     }
+    th:hover { opacity: 0.9; }
     
     tbody tr:nth-child(even) { background: var(--alt); }
     tr:hover { background: var(--hover); }
@@ -309,15 +311,15 @@
     <table id="evidence-table">
       <thead>
         <tr>
-          <th data-sort="year">Year</th>
-          <th data-sort="author">Author</th>
-          <th data-sort="os">OS</th>
-          <th data-sort="category">Category</th>
-          <th data-sort="category">Evidence File</th>
-		  <th data-sort="category">File Size</th>
+          <th data-sort="year">Year <span class="sort-icon"></span></th>
+          <th data-sort="author">Author <span class="sort-icon"></span></th>
+          <th data-sort="os">OS <span class="sort-icon"></span></th>
+          <th data-sort="category">Category <span class="sort-icon"></span></th>
+          <th data-sort="evidenceName">Evidence File <span class="sort-icon"></span></th>
+		  <th data-sort="filesize">File Size <span class="sort-icon"></span></th>
           <th>Password</th>
           <th>Hash</th>
-          <th data-sort="category">Event</th>
+          <th data-sort="event">Event <span class="sort-icon"></span></th>
           <th>Info</th>
         </tr>
       </thead>
@@ -401,6 +403,32 @@
       </tr>`).join("");
   }
 
+  // Helper function to convert text size representations into mathematical bytes
+  function parseSizeToBytes(sizeStr) {
+      if (!sizeStr) return 0;
+      
+      const str = sizeStr.toString().trim().toUpperCase();
+      const match = str.match(/([\d\.]+)\s*([A-Z]*)/);
+      if (!match) return 0;
+
+      const val = parseFloat(match[1]);
+      const unit = match[2];
+
+      const multiplier = {
+          'B': 1,
+          'KB': 1024,
+          'MB': 1024 ** 2,
+          'GB': 1024 ** 3,
+          'TB': 1024 ** 4,
+          'K': 1024,
+          'M': 1024 ** 2,
+          'G': 1024 ** 3,
+          'T': 1024 ** 4,
+      };
+
+      return val * (multiplier[unit] || 1);
+  }
+
   function applyFilters() {
     const y=document.getElementById("filter-year").value.trim();
     const a=document.getElementById("filter-author").value.trim().toLowerCase();
@@ -408,13 +436,27 @@
     const c=document.getElementById("filter-category").value.trim().toLowerCase();
     const s=document.getElementById("search-global").value.trim().toLowerCase();
 
-    let filtered=allData.filter(d=>
+    let filtered = allData.filter(d =>
       (!y||String(d.year).includes(y))&&(!a||d.author.toLowerCase().includes(a))&&(!o||d.os.toLowerCase().includes(o))&&(!c||d.category.toLowerCase().includes(c))&&(!s||Object.values(d).some(v=>String(v).toLowerCase().includes(s)))
     );
+
     if(sortKey){
-      filtered.sort((a,b)=>{
-        if(a[sortKey]<b[sortKey])return-1*sortDir;
-        if(a[sortKey]>b[sortKey])return 1*sortDir;
+      filtered.sort((a,b) => {
+        let valA = a[sortKey];
+        let valB = b[sortKey];
+
+        // Apply mathematical conversion specifically for the filesize column
+        if (sortKey === 'filesize') {
+            valA = parseSizeToBytes(valA);
+            valB = parseSizeToBytes(valB);
+        } else {
+            // Ensure standard string sorting is case-insensitive for proper alphabetical order
+            if(typeof valA === 'string') valA = valA.toLowerCase();
+            if(typeof valB === 'string') valB = valB.toLowerCase();
+        }
+
+        if(valA < valB) return -1 * sortDir;
+        if(valA > valB) return 1 * sortDir;
         return 0;
       });
     }
@@ -422,8 +464,30 @@
   }
 
   ["search-global","filter-year","filter-author","filter-os","filter-category"].forEach(id=>document.getElementById(id).addEventListener("input",applyFilters));
-  document.getElementById("clear-filters").addEventListener("click",()=>{["search-global","filter-year","filter-author","filter-os","filter-category"].forEach(id=>document.getElementById(id).value="");applyFilters();});
-  document.querySelectorAll("th[data-sort]").forEach(th=>th.addEventListener("click",()=>{const key=th.dataset.sort;sortDir=(sortKey===key)?-sortDir:1;sortKey=key;applyFilters();}));
+  
+  document.getElementById("clear-filters").addEventListener("click",()=>{
+      ["search-global","filter-year","filter-author","filter-os","filter-category"].forEach(id=>document.getElementById(id).value="");
+      sortKey = null;
+      document.querySelectorAll(".sort-icon").forEach(icon => icon.textContent = "");
+      applyFilters();
+  });
+  
+  document.querySelectorAll("th[data-sort]").forEach(th => {
+      th.addEventListener("click", () => {
+          const key = th.dataset.sort;
+          sortDir = (sortKey === key) ? -sortDir : 1;
+          sortKey = key;
+          
+          document.querySelectorAll(".sort-icon").forEach(icon => icon.textContent = "");
+          
+          const activeIcon = th.querySelector(".sort-icon");
+          if (activeIcon) {
+              activeIcon.textContent = sortDir === 1 ? " ▲" : " ▼";
+          }
+          
+          applyFilters();
+      });
+  });
   
   document.getElementById("theme-toggle").addEventListener("click",()=>{const html=document.documentElement;const dark=html.getAttribute("data-theme")==="dark";html.setAttribute("data-theme",dark?"light":"dark");localStorage.setItem("theme",dark?"light":"dark");document.getElementById("theme-icon").textContent=dark?"🌓":"☀️";});
 
