@@ -62,13 +62,12 @@
       min-height: 95vh;
     }
 
-    /* FLOATING LOGO CSS */
     #floating-logo {
         position: fixed;
-        top: 30px;
-        left: calc(1vw + 20px); 
-        max-width: 150px; 
-        max-height: 100px;
+        top: 20px;
+        left: calc(1vw + 40px); 
+        max-width: 350px; 
+        max-height: 140px;
         object-fit: contain;
         z-index: 9999;
         opacity: 0;
@@ -88,7 +87,7 @@
         transform: translateY(0);
     }
 
-    .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; gap: 15px; }
+    .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; gap: 15px; }
     
     .header-row { 
       display: grid; 
@@ -96,12 +95,15 @@
       align-items: start; 
       width: 100%; 
     }
+
     #header-logo-img { 
       max-width: 100%; 
       max-height: 250px;
       grid-column: 2; 
       justify-self: center; 
+      border-radius: 8px;
     }
+
     .header-controls { 
       grid-column: 3; 
       justify-self: end; 
@@ -115,7 +117,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 6px;
+      gap: 10px;
     }
     .last-updated-text {
       font-size: 0.75rem;
@@ -137,6 +139,32 @@
     .social-icon { color: var(--text); transition: color 0.2s, transform 0.2s; display: flex; }
     .social-icon:hover { color: var(--link); transform: scale(1.1); }
     
+    .tabs-container {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      width: 100%;
+      border-bottom: 3px solid var(--header-bg);
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 10px 25px;
+      background-color: #6c757d;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px 8px 0 0;
+      font-family: sans-serif;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .tab-btn:hover:not(.active) {
+      background-color: #07cdda;
+    }
+    .tab-btn.active {
+      background-color: var(--header-bg);
+      cursor: default;
+    }
+
     #filter-container {
       display: flex;
       justify-content: center;
@@ -171,7 +199,6 @@
       text-align: center;
     }
 
-    /* SCROLLABLE TABLE CONTAINER */
     .table-responsive { 
       overflow-x: auto; 
       overflow-y: auto; 
@@ -195,7 +222,6 @@
       vertical-align: middle;
     }
     
-    /* STICKY HEADERS & SORTING */
     th {
       background: var(--header-bg);
       color: var(--header-text);
@@ -219,11 +245,13 @@
 
     .footer-section { margin-top: auto; text-align: center; padding-top: 40px; }
     .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon); text-transform: uppercase; letter-spacing: 1px; }
+    
     #footer-logo-img { 
       max-width: 300px;
       max-height: 120px;
       margin-top: 10px;
       margin-bottom: 10px;
+      border-radius: 8px;
     }
     
     @media (max-width: 768px) {
@@ -234,11 +262,6 @@
         gap: 20px;
       }
       
-      #header-logo-img {
-        grid-column: auto;
-        justify-self: auto;
-      }
-
       .header-controls {
         position: static;
         grid-column: auto;
@@ -246,54 +269,61 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        gap: 20px;
+        gap: 15px;
       }
       
-      .header-info-stack {
-        align-items: center;
-      }
-      
+      #header-logo-img { grid-column: auto; justify-self: auto; }
+      .header-info-stack { align-items: center; }
       #floating-logo { display: none; }
     }
   </style>
 </head>
 
 <body>
-<!-- Floating Logo Element -->
 <img id="floating-logo" alt="The Evidence Locker Floating Logo" title="Scroll to top">
 
 <div class="container">
   <div class="header-section">
     <div class="header-row">
+
       <img id="header-logo-img" alt="Header Logo">
       
       <div class="header-controls">
         <div class="header-info-stack">
-          <div class="social-links" id="header-social-links"></div>
+          <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="https://forms.gle/P3jnEAP94ai5aFdt5" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               onmouseover="this.style.backgroundColor='#07cdda'; this.style.borderColor='#07cdda';" 
+               onmouseout="this.style.backgroundColor='#6c757d'; this.style.borderColor='#6c757d';"
+               style="
+                display: inline-block; 
+                padding: 8px 16px; 
+                background-color: #6c757d; 
+                color: white; 
+                text-decoration: none; 
+                border-radius: 4px; 
+                font-family: sans-serif; 
+                font-weight: bold;
+                border: 1px solid #6c757d; 
+                transition: background-color 0.3s, border-color 0.3s;
+               ">
+               New Submission
+            </a>
+            
+            <div class="social-links" id="header-social-links"></div>
+          </div>
+          
           <div id="last-updated" class="last-updated-text"></div>
-			<a href="https://forms.gle/P3jnEAP94ai5aFdt5" 
-			   target="_blank" 
-			   rel="noopener noreferrer" 
-			   onmouseover="this.style.backgroundColor='#07cdda'; this.style.borderColor='#07cdda';" 
-			   onmouseout="this.style.backgroundColor='#6c757d'; this.style.borderColor='#6c757d';"
-			   style="
-				display: inline-block; 
-				margin-top: 10px; 
-				padding: 10px 20px; 
-				background-color: #6c757d; 
-				color: white; 
-				text-decoration: none; 
-				border-radius: 4px; 
-				font-family: sans-serif; 
-				border: 1px solid #6c757d; 
-				transition: background-color 0.3s, border-color 0.3s;
-			   ">
-			   New Submission
-			</a>
         </div>
         <button id="theme-toggle"><span id="theme-icon">🌓</span></button>
       </div>
     </div>
+  </div>
+
+  <div class="tabs-container">
+    <a href="index.html" class="tab-btn active">Main Compendium</a>
+    <a href="file_search.html" class="tab-btn">File Search Engine</a>
   </div>
 
   <div id="filter-container">
@@ -403,10 +433,8 @@
       </tr>`).join("");
   }
 
-  // Helper function to convert text size representations into mathematical bytes
   function parseSizeToBytes(sizeStr) {
       if (!sizeStr) return 0;
-      
       const str = sizeStr.toString().trim().toUpperCase();
       const match = str.match(/([\d\.]+)\s*([A-Z]*)/);
       if (!match) return 0;
@@ -415,15 +443,8 @@
       const unit = match[2];
 
       const multiplier = {
-          'B': 1,
-          'KB': 1024,
-          'MB': 1024 ** 2,
-          'GB': 1024 ** 3,
-          'TB': 1024 ** 4,
-          'K': 1024,
-          'M': 1024 ** 2,
-          'G': 1024 ** 3,
-          'T': 1024 ** 4,
+          'B': 1, 'KB': 1024, 'MB': 1024 ** 2, 'GB': 1024 ** 3, 'TB': 1024 ** 4,
+          'K': 1024, 'M': 1024 ** 2, 'G': 1024 ** 3, 'T': 1024 ** 4,
       };
 
       return val * (multiplier[unit] || 1);
@@ -445,12 +466,10 @@
         let valA = a[sortKey];
         let valB = b[sortKey];
 
-        // Apply mathematical conversion specifically for the filesize column
         if (sortKey === 'filesize') {
             valA = parseSizeToBytes(valA);
             valB = parseSizeToBytes(valB);
         } else {
-            // Ensure standard string sorting is case-insensitive for proper alphabetical order
             if(typeof valA === 'string') valA = valA.toLowerCase();
             if(typeof valB === 'string') valB = valB.toLowerCase();
         }
@@ -492,25 +511,21 @@
   document.getElementById("theme-toggle").addEventListener("click",()=>{const html=document.documentElement;const dark=html.getAttribute("data-theme")==="dark";html.setAttribute("data-theme",dark?"light":"dark");localStorage.setItem("theme",dark?"light":"dark");document.getElementById("theme-icon").textContent=dark?"🌓":"☀️";});
 
   function setupUI() {
-    // Set Logo Sources
     document.getElementById("header-logo-img").src = CONFIG.headerLogo;
     document.getElementById("footer-logo-img").src = CONFIG.footerLogo;
     document.getElementById("floating-logo").src = CONFIG.headerLogo;
 
-    // Load Socials
     const S=CONFIG.social;
     const sHTML=`<a href="${S.website}" target="_blank" class="social-icon">${SOCIAL.web}</a><a href="${S.github}" target="_blank" class="social-icon">${SOCIAL.git}</a><a href="${S.linkedin}" target="_blank" class="social-icon">${SOCIAL.in}</a><a href="${S.x}" target="_blank" class="social-icon">${SOCIAL.x}</a>`;
     document.getElementById("header-social-links").innerHTML=sHTML;
     document.getElementById("footer-social-links").innerHTML=sHTML;
 
-    // Apply Theme
     const html=document.documentElement;
     const themeIcon = document.getElementById("theme-icon");
     const currentTheme = localStorage.getItem("theme") || "dark"; 
     html.setAttribute("data-theme", currentTheme);
     themeIcon.textContent = (currentTheme === "dark") ? "☀️" : "🌓";
     
-    // Intersection Observer for Floating Logo
     const headerLogo = document.getElementById("header-logo-img");
     const floatingLogo = document.getElementById("floating-logo");
     
@@ -527,7 +542,6 @@
         
         observer.observe(headerLogo);
 
-        // Click floating logo to scroll back up
         floatingLogo.addEventListener("click", () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });

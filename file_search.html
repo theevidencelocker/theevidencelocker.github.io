@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Evidence Locker - File Search</title>
+
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #212529;
+      --container: #ffffff;
+      --header-bg: #3c464f;
+      --header-text: #ffffff;
+      --border: #dee2e6;
+      --hover: #e9ecef;
+      --alt: #f8f9fa;
+      --input: #ffffff;
+      --filter-bg: #e9ecef;
+      --link: #0d6efd;
+      --icon: #6c757d;
+      --tooltip-bg: #333;
+      --tooltip-text: #fff;
+    }
+    [data-theme="dark"] {
+      --bg: #121212;
+      --text: #e0e0e0;
+      --container: #1e1e1e;
+      --header-bg: #3c464f;
+      --header-text: #ffffff;
+      --border: #444;
+      --hover: #333;
+      --alt: #222;
+      --input: #2b2b2b;
+      --filter-bg: #2c2c2c;
+      --link: #75b6fd;
+      --icon: #adb5bd;
+      --tooltip-bg: #e0e0e0;
+      --tooltip-text: #121212;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    
+    .container {
+      max-width: 98%; 
+      width: 100%;
+      box-sizing: border-box;
+      margin: auto;
+      background: var(--container);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      min-height: 95vh;
+    }
+
+    #floating-logo {
+        position: fixed;
+        top: 10px;
+        left: calc(1vw + 40px); 
+        max-width: 350px; 
+        max-height: 140px;
+        object-fit: contain;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        border-radius: 8px;
+        cursor: pointer;
+        background: var(--container);
+        padding: 5px;
+        border: 1px solid var(--border);
+    }
+    #floating-logo.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; gap: 15px; }
+    
+    .header-row { 
+      display: grid; 
+      grid-template-columns: 1fr auto 1fr; 
+      align-items: start; 
+      width: 100%; 
+    }
+
+    #header-logo-img { 
+      max-width: 100%; 
+      max-height: 250px;
+      grid-column: 2; 
+      justify-self: center;
+      border-radius: 8px; 
+    }
+
+    .header-controls { 
+      grid-column: 3; 
+      justify-self: end; 
+      display: flex; 
+      align-items: flex-start;
+      gap: 15px; 
+      z-index: 10;
+    }
+
+    .header-info-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .last-updated-text {
+      font-size: 0.75rem;
+      color: var(--icon);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    #theme-toggle { 
+      background: none; 
+      border: 2px solid var(--border); 
+      color: var(--text); 
+      padding: 6px 10px; 
+      border-radius: 20px; 
+      cursor: pointer; 
+      margin-top: 2px;
+    }
+    .social-links { display: flex; gap: 15px; justify-content: center; }
+    .social-icon { color: var(--text); transition: color 0.2s, transform 0.2s; display: flex; }
+    .social-icon:hover { color: var(--link); transform: scale(1.1); }
+    
+    .tabs-container {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      width: 100%;
+      border-bottom: 3px solid var(--header-bg);
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 10px 25px;
+      background-color: #6c757d;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px 8px 0 0;
+      font-family: sans-serif;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .tab-btn:hover:not(.active) {
+      background-color: #07cdda;
+    }
+    .tab-btn.active {
+      background-color: var(--header-bg);
+      cursor: default;
+    }
+
+    #filter-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .controls-panel { 
+      background: var(--filter-bg); 
+      border-radius: 6px; 
+      border: 1px solid var(--border);
+      padding: 15px; 
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .inputs-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .inputs-row label {
+      font-size: 0.9em;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .inputs-row input, .inputs-row select {
+      margin-top: 5px; 
+      padding: 8px; 
+      border: 1px solid var(--border); 
+      border-radius: 4px; 
+      background: var(--input); 
+      color: var(--text);
+      text-align: center;
+    }
+
+    .buttons-row {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .action-btn {
+      flex: 1;
+      max-width: 100%;
+      padding: 10px;
+      background: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .action-btn:hover { background: #5a6268; }
+    .action-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .action-btn-primary {
+      background: #07cdda;
+    }
+    .action-btn-primary:hover { background: #06b5c1; }
+
+    .status-inline {
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.9em;
+      color: var(--text);
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .table-responsive { 
+      overflow-x: auto; 
+      overflow-y: auto; 
+      width: 100%; 
+      max-height: 65vh; 
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 0; 
+      font-size: 0.9em; 
+      table-layout: auto; 
+    }
+    
+    th, td { 
+      text-align: left; 
+      padding: 10px; 
+      border-bottom: 1px solid var(--border); 
+      vertical-align: middle;
+      white-space: nowrap; 
+    }
+    
+    th {
+      background: var(--header-bg);
+      color: var(--header-text);
+      position: sticky; 
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 2px -1px rgba(0,0,0,0.4); 
+      text-align: center; 
+    }
+    
+    tbody tr:nth-child(even) { background: var(--alt); }
+    tr:hover { background: var(--hover); }
+    a { color: var(--link); text-decoration: none; }
+
+    .sortable { cursor: pointer; user-select: none; font-weight: bold; }
+    .sortable:hover { opacity: 0.8; }
+    
+    .column-filter {
+        width: 100%;
+        padding: 4px;
+        box-sizing: border-box;
+        font-size: 0.85em;
+        margin-top: 5px;
+        background: var(--input);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        text-align: center; 
+    }
+
+    .wrap-text {
+        white-space: normal !important;
+        word-break: break-all;
+        overflow-wrap: anywhere;
+        min-width: 200px;
+        max-width: 600px;
+    }
+
+    .footer-section { margin-top: auto; text-align: center; padding-top: 40px; }
+    .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon); text-transform: uppercase; letter-spacing: 1px; }
+    
+    #footer-logo-img { 
+      max-width: 300px;
+      max-height: 120px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    
+    @media (max-width: 768px) {
+      .header-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+      
+      .header-controls {
+        position: static;
+        grid-column: auto;
+        justify-self: auto;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 15px;
+      }
+      
+      #header-logo-img { grid-column: auto; justify-self: auto; }
+      .header-info-stack { align-items: center; }
+      #floating-logo { display: none; }
+      .buttons-row { flex-direction: column; }
+      .action-btn { max-width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+<img id="floating-logo" alt="The Evidence Locker Floating Logo" title="Scroll to top">
+
+<div class="container">
+  <div class="header-section">
+    <div class="header-row">
+
+      <img id="header-logo-img" alt="Header Logo">
+      
+      <div class="header-controls">
+        <div class="header-info-stack">
+          <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="https://forms.gle/P3jnEAP94ai5aFdt5" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               onmouseover="this.style.backgroundColor='#07cdda'; this.style.borderColor='#07cdda';" 
+               onmouseout="this.style.backgroundColor='#6c757d'; this.style.borderColor='#6c757d';"
+               style="
+                display: inline-block; 
+                padding: 8px 16px; 
+                background-color: #6c757d; 
+                color: white; 
+                text-decoration: none; 
+                border-radius: 4px; 
+                font-family: sans-serif; 
+                font-weight: bold;
+                border: 1px solid #6c757d; 
+                transition: background-color 0.3s, border-color 0.3s;
+               ">
+               New Submission
+            </a>
+            
+            <div class="social-links" id="header-social-links"></div>
+          </div>
+          
+          <div id="last-updated" class="last-updated-text"></div>
+        </div>
+        <button id="theme-toggle"><span id="theme-icon">🌓</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs-container">
+    <a href="index.html" class="tab-btn">Main Compendium</a>
+    <a href="file_search.html" class="tab-btn active">File Search Engine</a>
+  </div>
+
+  <div id="filter-wrapper">
+    <div class="controls-panel">
+      <div class="inputs-row">
+        <label>Global Search:
+          <input type="text" id="globalSearch" placeholder="Search across all columns..." oninput="handleInput()" disabled />
+        </label>
+        <label>Rows to Display:
+          <select id="rowLimit" onchange="runQuery()">
+              <option value="100">100</option>
+              <option value="1000" selected>1,000</option>
+              <option value="5000">5,000</option>
+          </select>
+        </label>
+      </div>
+      
+      <div class="buttons-row">
+        <button id="clearBtn" class="action-btn" onclick="clearFilters()" disabled>Clear Filters</button>
+        <button id="exportBtn" class="action-btn action-btn-primary" onclick="exportCSV()" disabled>Export CSV</button>
+      </div>
+
+      <div id="status-bar" class="status-inline">Downloading WebAssembly Engine (approx. 2MB)...</div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table id="evidence-table">
+        <thead id="tableHead">
+            <!-- Headers injected dynamically -->
+        </thead>
+        <tbody id="tableBody">
+            <!-- Rows injected dynamically -->
+        </tbody>
+    </table>
+  </div>
+
+  <div class="footer-section">
+    <div class="powered-by">Powered By</div>
+    <img id="footer-logo-img" alt="Footer Logo">
+    <div class="social-links" id="footer-social-links"></div>
+  </div>
+</div>
+
+<script>
+  const CONFIG = {
+    headerLogo: "theevidencelocker.png",
+    footerLogo: "stark4n6.jpg",
+    social: {
+      website: "https://startme.stark4n6.com/",
+      github: "https://github.com/stark4n6",
+      linkedin: "https://www.linkedin.com/in/kevin-pagano/",
+      x: "https://twitter.com/stark4n6"
+    }
+  };
+
+  const SOCIAL = {
+    web: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    git: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`,
+    in: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`,
+    x: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>`
+  };
+
+  document.getElementById("theme-toggle").addEventListener("click",()=>{
+      const html=document.documentElement;
+      const dark=html.getAttribute("data-theme")==="dark";
+      html.setAttribute("data-theme",dark?"light":"dark");
+      localStorage.setItem("theme",dark?"light":"dark");
+      document.getElementById("theme-icon").textContent=dark?"🌓":"☀️";
+  });
+
+  async function fetchLastUpdated() {
+      try {
+          const res = await fetch(`data.json?v=${new Date().getTime()}`, { method: 'HEAD' });
+          const lastModHeader = res.headers.get('Last-Modified');
+          if (lastModHeader) {
+              const dateObj = new Date(lastModHeader);
+              const year = dateObj.getFullYear();
+              const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+              const day = String(dateObj.getDate()).padStart(2, '0');
+              document.getElementById("last-updated").textContent = `Last Updated: ${year}-${month}-${day}`;
+          }
+      } catch (err) {
+          console.error("Could not load last updated timestamp.");
+      }
+  }
+
+  function setupUI() {
+    document.getElementById("header-logo-img").src = CONFIG.headerLogo;
+    document.getElementById("footer-logo-img").src = CONFIG.footerLogo;
+    document.getElementById("floating-logo").src = CONFIG.headerLogo;
+
+    const S=CONFIG.social;
+    const sHTML=`<a href="${S.website}" target="_blank" class="social-icon">${SOCIAL.web}</a><a href="${S.github}" target="_blank" class="social-icon">${SOCIAL.git}</a><a href="${S.linkedin}" target="_blank" class="social-icon">${SOCIAL.in}</a><a href="${S.x}" target="_blank" class="social-icon">${SOCIAL.x}</a>`;
+    document.getElementById("header-social-links").innerHTML=sHTML;
+    document.getElementById("footer-social-links").innerHTML=sHTML;
+
+    const html=document.documentElement;
+    const themeIcon = document.getElementById("theme-icon");
+    const currentTheme = localStorage.getItem("theme") || "dark"; 
+    html.setAttribute("data-theme", currentTheme);
+    themeIcon.textContent = (currentTheme === "dark") ? "☀️" : "🌓";
+    
+    const headerLogo = document.getElementById("header-logo-img");
+    const floatingLogo = document.getElementById("floating-logo");
+    
+    if (headerLogo && floatingLogo) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    floatingLogo.classList.add("visible");
+                } else {
+                    floatingLogo.classList.remove("visible");
+                }
+            });
+        }, { threshold: 0 });
+        
+        observer.observe(headerLogo);
+
+        floatingLogo.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    fetchLastUpdated();
+  }
+
+  setupUI(); 
+</script>
+
+<script type="module">
+    import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm/+esm';
+
+    const parquetFiles = [
+        'Google Pixel 4a Logical Image - Data.tar.parquet'
+    ];
+
+    let dynamicColumns = [];
+    let sortCol = null;
+    let sortDesc = false;
+    let totalRowCount = 0; 
+    const wrapTriggers = ['filename', 'file name', 'name', 'path', 'filepath', 'file path', 'entry path', 'source_image'];
+
+    window.setSort = function(col) {
+        if (sortCol === col) {
+            sortDesc = !sortDesc;
+        } else {
+            sortCol = col;
+            sortDesc = false; 
+        }
+        dynamicColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
+        document.getElementById(`sort_icon_${col}`).innerText = sortDesc ? " ▼" : " ▲";
+        runQuery();
+    };
+
+    window.runQuery = async function() {
+        document.getElementById('status-bar').innerText = "Querying data...";
+        document.getElementById('status-bar').style.color = "var(--text)"; 
+        document.getElementById('tableBody').innerHTML = ""; 
+
+        let query = `SELECT * FROM current_evidence WHERE 1=1 `;
+
+        const globalSearch = document.getElementById('globalSearch').value.trim();
+        if (globalSearch) {
+            const cleanTerm = globalSearch.replace(/'/g, "''"); 
+            const colCasts = dynamicColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
+            query += ` AND (${colCasts.join(' OR ')}) `;
+        }
+
+        dynamicColumns.forEach(col => {
+            const filterVal = document.getElementById(`filter_${col}`).value.trim();
+            if (filterVal) {
+                const cleanFilter = filterVal.replace(/'/g, "''");
+                query += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+            }
+        });
+
+        if (sortCol) {
+            query += ` ORDER BY "${sortCol}" ${sortDesc ? 'DESC' : 'ASC'} `;
+        }
+
+        const rowLimit = document.getElementById('rowLimit').value;
+        query += ` LIMIT ${rowLimit}`;
+
+        try {
+            const result = await window.dbConn.query(query);
+            const rows = result.toArray();
+            
+            if (rows.length === 0) {
+                document.getElementById('status-bar').innerText = `Displaying 0 of ${totalRowCount.toLocaleString()} entries.`;
+                return;
+            }
+
+            let tbodyHtml = '';
+            for (let row of rows) {
+                tbodyHtml += '<tr>';
+                for (let col of dynamicColumns) {
+                    const isWrap = wrapTriggers.some(trigger => col.toLowerCase().includes(trigger));
+                    const wrapClass = isWrap ? 'wrap-text' : '';
+                    const cellData = row[col] !== null ? row[col] : '';
+                    tbodyHtml += `<td class="${wrapClass}">${cellData}</td>`;
+                }
+                tbodyHtml += '</tr>';
+            }
+            document.getElementById('tableBody').innerHTML = tbodyHtml;
+            
+            let statusText = `Displaying ${rows.length.toLocaleString()} of ${totalRowCount.toLocaleString()} entries.`;
+
+            document.getElementById('status-bar').innerText = statusText;
+
+        } catch (err) {
+            console.error(err);
+            document.getElementById('status-bar').innerText = `Query Error: ${err.message}`;
+            document.getElementById('status-bar').style.color = "red";
+        }
+    };
+
+    window.clearFilters = function() {
+        document.getElementById('globalSearch').value = "";
+        dynamicColumns.forEach(col => document.getElementById(`filter_${col}`).value = "");
+        sortCol = null;
+        dynamicColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
+        runQuery();
+    };
+
+    window.exportCSV = async function() {
+        document.getElementById('status-bar').innerText = "Preparing CSV export...";
+
+        let query = `SELECT * FROM current_evidence WHERE 1=1 `;
+
+        const globalSearch = document.getElementById('globalSearch').value.trim();
+        if (globalSearch) {
+            const cleanTerm = globalSearch.replace(/'/g, "''"); 
+            const colCasts = dynamicColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
+            query += ` AND (${colCasts.join(' OR ')}) `;
+        }
+
+        dynamicColumns.forEach(col => {
+            const filterVal = document.getElementById(`filter_${col}`).value.trim();
+            if (filterVal) {
+                const cleanFilter = filterVal.replace(/'/g, "''");
+                query += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+            }
+        });
+
+        if (sortCol) {
+            query += ` ORDER BY "${sortCol}" ${sortDesc ? 'DESC' : 'ASC'} `;
+        }
+
+        try {
+            const result = await window.dbConn.query(query);
+            const rows = result.toArray();
+            
+            if (rows.length === 0) {
+                document.getElementById('status-bar').innerText = "No data to export.";
+                return;
+            }
+
+            const headers = dynamicColumns.map(col => `"${col}"`).join(',');
+            const csvRows = rows.map(row => {
+                return dynamicColumns.map(col => {
+                    let val = row[col] !== null ? row[col].toString() : '';
+                    val = val.replace(/"/g, '""');
+                    return `"${val}"`;
+                }).join(',');
+            });
+            
+            const csvString = [headers, ...csvRows].join('\n');
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            
+            const date = new Date();
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const hh = String(date.getHours()).padStart(2, '0');
+            const mins = String(date.getMinutes()).padStart(2, '0');
+            const ss = String(date.getSeconds()).padStart(2, '0');
+            const filename = `theevidencelocker_file_search_${yyyy}${mm}${dd}_${hh}${mins}${ss}.csv`;
+
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            document.getElementById('status-bar').innerText = `Exported ${rows.length} rows to CSV.`;
+            
+        } catch (err) {
+            console.error(err);
+            document.getElementById('status-bar').innerText = `Export Error: ${err.message}`;
+            document.getElementById('status-bar').style.color = "red";
+        }
+    };
+
+    let debounceTimer;
+    window.handleInput = function() {
+        clearTimeout(debounceTimer);
+        document.getElementById('status-bar').innerText = "Waiting for typing to pause...";
+        document.getElementById('status-bar').style.color = "var(--text)";
+
+        debounceTimer = setTimeout(() => {
+            runQuery();
+        }, 400); 
+    };
+
+    function buildTableStructure() {
+        const thead = document.getElementById('tableHead');
+        let headerRow = '<tr>';
+        
+        dynamicColumns.forEach(col => {
+            const isWrap = wrapTriggers.some(trigger => col.toLowerCase().includes(trigger));
+            const wrapClass = isWrap ? 'wrap-text' : '';
+
+            headerRow += `<th class="${wrapClass}">
+                            <div class="sortable" onclick="setSort('${col}')" style="margin-bottom: 8px;">
+                                ${col} <span id="sort_icon_${col}"></span>
+                            </div>
+                            <input type="text" class="column-filter" id="filter_${col}" placeholder="Filter..." oninput="handleInput()">
+                          </th>`;
+        });
+        
+        headerRow += '</tr>';
+        thead.innerHTML = headerRow;
+    }
+
+    const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
+    const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+    
+    const worker_url = URL.createObjectURL(new Blob([`importScripts("${bundle.mainWorker}");`], { type: 'text/javascript' }));
+    const worker = new Worker(worker_url);
+    const logger = new duckdb.ConsoleLogger();
+    const db = new duckdb.AsyncDuckDB(logger, worker);
+    await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+    URL.revokeObjectURL(worker_url);
+    
+    window.dbConn = await db.connect();
+
+    try {
+        document.getElementById('status-bar').innerText = "Mounting Parquet files...";
+        
+        const fileUrls = parquetFiles.map(file => new URL(`file_listing/${encodeURIComponent(file)}?v=${new Date().getTime()}`, window.location.href).href);
+        const sqlUrlArray = `[${fileUrls.map(url => `'${url}'`).join(', ')}]`;
+        
+        await window.dbConn.query(`CREATE VIEW current_evidence AS SELECT * FROM read_parquet(${sqlUrlArray})`);
+        
+        const countResult = await window.dbConn.query(`SELECT COUNT(*) as count FROM current_evidence`);
+        totalRowCount = Number(countResult.toArray()[0].count);
+
+        const descResult = await window.dbConn.query(`DESCRIBE current_evidence`);
+        dynamicColumns = descResult.toArray().map(row => row.column_name);
+        
+        buildTableStructure();
+        
+        document.getElementById('globalSearch').disabled = false;
+        document.getElementById('clearBtn').disabled = false;
+        document.getElementById('exportBtn').disabled = false;
+        
+        await runQuery();
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('status-bar').innerText = "Error initializing engine. Ensure parquet files exist in the file_listing directory.";
+        document.getElementById('status-bar').style.color = "red";
+    }
+</script>
+</body>
+</html>
