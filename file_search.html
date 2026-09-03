@@ -595,9 +595,6 @@
             
             let statusText = `Displaying ${rows.length.toLocaleString()} of ${totalRowCount.toLocaleString()} entries.`;
 
-            if (rows.length >= parseInt(rowLimit)) {
-                statusText += ` (Limited to ${rowLimit} rows for performance)`;
-            }
             document.getElementById('status-bar').innerText = statusText;
 
         } catch (err) {
