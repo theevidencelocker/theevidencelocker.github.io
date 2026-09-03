@@ -730,13 +730,21 @@
     window.dbConn = await db.connect();
 
     try {
-        document.getElementById('status-bar').innerText = "Scanning remote repository...";
+        document.getElementById('status-bar').innerText = "Fetching file manifest...";
         
-        // Point directly to your GitHub repository's file_listing directory using raw content URLs
-        const globPattern = 'https://raw.githubusercontent.com/theevidencelocker/theevidencelocker.github.io/main/file_listing/*.parquet';
+        const manifestRes = await fetch(`file_listing/file_list.json?v=${new Date().getTime()}`);
+        if (!manifestRes.ok) throw new Error("Could not load file_list.json manifest.");
+        
+        const parquetFiles = await manifestRes.json();
+        if (parquetFiles.length === 0) throw new Error("No Parquet files found in manifest.");
+
+        document.getElementById('status-bar').innerText = "Mounting Parquet files...";
+        
+        const fileUrls = parquetFiles.map(file => new URL(`file_listing/${encodeURIComponent(file)}?v=${new Date().getTime()}`, window.location.href).href);
+        const sqlUrlArray = `[${fileUrls.map(url => `'${url}'`).join(', ')}]`;
         
         await window.dbConn.query(`DROP VIEW IF EXISTS current_evidence;`);
-        await window.dbConn.query(`CREATE VIEW current_evidence AS SELECT * FROM read_parquet('${globPattern}', union_by_name=true);`);
+        await window.dbConn.query(`CREATE VIEW current_evidence AS SELECT * FROM read_parquet(${sqlUrlArray}, union_by_name=true);`);
         
         const countResult = await window.dbConn.query(`SELECT COUNT(*) as count FROM current_evidence`);
         totalRowCount = Number(countResult.toArray()[0].count);
