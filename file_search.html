@@ -524,11 +524,6 @@
 <script type="module">
     import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm/+esm';
 
-    const parquetFiles = [
-        'iPhone12.zip.parquet',
-		'SamsungS20.zip.parquet'
-    ];
-
     let dynamicColumns = [];
     let sortCol = null;
     let sortDesc = false;
@@ -600,6 +595,9 @@
             
             let statusText = `Displaying ${rows.length.toLocaleString()} of ${totalRowCount.toLocaleString()} entries.`;
 
+            if (rows.length >= parseInt(rowLimit)) {
+                statusText += ` (Limited to ${rowLimit} rows for performance)`;
+            }
             document.getElementById('status-bar').innerText = statusText;
 
         } catch (err) {
@@ -732,12 +730,13 @@
     window.dbConn = await db.connect();
 
     try {
-        document.getElementById('status-bar').innerText = "Mounting Parquet files...";
+        document.getElementById('status-bar').innerText = "Scanning remote repository...";
         
-        const fileUrls = parquetFiles.map(file => new URL(`file_listing/${encodeURIComponent(file)}?v=${new Date().getTime()}`, window.location.href).href);
-        const sqlUrlArray = `[${fileUrls.map(url => `'${url}'`).join(', ')}]`;
+        // Point directly to your GitHub repository's file_listing directory using raw content URLs
+        const globPattern = 'https://raw.githubusercontent.com/theevidencelocker/theevidencelocker.github.io/main/file_listing/*.parquet';
         
-        await window.dbConn.query(`CREATE VIEW current_evidence AS SELECT * FROM read_parquet(${sqlUrlArray})`);
+        await window.dbConn.query(`DROP VIEW IF EXISTS current_evidence;`);
+        await window.dbConn.query(`CREATE VIEW current_evidence AS SELECT * FROM read_parquet('${globPattern}', union_by_name=true);`);
         
         const countResult = await window.dbConn.query(`SELECT COUNT(*) as count FROM current_evidence`);
         totalRowCount = Number(countResult.toArray()[0].count);
@@ -755,7 +754,7 @@
 
     } catch (err) {
         console.error(err);
-        document.getElementById('status-bar').innerText = "Error initializing engine. Ensure parquet files exist in the file_listing directory.";
+        document.getElementById('status-bar').innerText = `Error initializing engine: ${err.message}`;
         document.getElementById('status-bar').style.color = "red";
     }
 </script>
