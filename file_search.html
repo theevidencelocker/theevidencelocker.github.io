@@ -62,31 +62,6 @@
       min-height: 95vh;
     }
 
-    #floating-logo {
-        position: fixed;
-        top: 10px;
-        left: calc(1vw + 40px); 
-        max-width: 350px; 
-        max-height: 140px;
-        object-fit: contain;
-        z-index: 9999;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-20px);
-        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        border-radius: 8px;
-        cursor: pointer;
-        background: var(--container);
-        padding: 5px;
-        border: 1px solid var(--border);
-    }
-    #floating-logo.visible {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
     .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; gap: 15px; }
     
     .header-row { 
@@ -339,7 +314,6 @@
       
       #header-logo-img { grid-column: auto; justify-self: auto; }
       .header-info-stack { align-items: center; }
-      #floating-logo { display: none; }
       .buttons-row { flex-direction: column; }
       .action-btn { max-width: 100%; }
     }
@@ -347,8 +321,6 @@
 </head>
 
 <body>
-<img id="floating-logo" alt="The Evidence Locker Floating Logo" title="Scroll to top">
-
 <div class="container">
   <div class="header-section">
     <div class="header-row">
@@ -481,7 +453,6 @@
   function setupUI() {
     document.getElementById("header-logo-img").src = CONFIG.headerLogo;
     document.getElementById("footer-logo-img").src = CONFIG.footerLogo;
-    document.getElementById("floating-logo").src = CONFIG.headerLogo;
 
     const S=CONFIG.social;
     const sHTML=`<a href="${S.website}" target="_blank" class="social-icon">${SOCIAL.web}</a><a href="${S.github}" target="_blank" class="social-icon">${SOCIAL.git}</a><a href="${S.linkedin}" target="_blank" class="social-icon">${SOCIAL.in}</a><a href="${S.x}" target="_blank" class="social-icon">${SOCIAL.x}</a>`;
@@ -493,29 +464,6 @@
     const currentTheme = localStorage.getItem("theme") || "dark"; 
     html.setAttribute("data-theme", currentTheme);
     themeIcon.textContent = (currentTheme === "dark") ? "☀️" : "🌓";
-    
-    const headerLogo = document.getElementById("header-logo-img");
-    const floatingLogo = document.getElementById("floating-logo");
-    
-    if (headerLogo && floatingLogo) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    floatingLogo.classList.add("visible");
-                } else {
-                    floatingLogo.classList.remove("visible");
-                }
-            });
-        }, { threshold: 0 });
-        
-        observer.observe(headerLogo);
-
-        floatingLogo.addEventListener("click", () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
-
-    fetchLastUpdated();
   }
 
   setupUI(); 
@@ -754,6 +702,20 @@
         document.getElementById('globalSearch').disabled = false;
         document.getElementById('clearBtn').disabled = false;
         document.getElementById('exportBtn').disabled = false;
+
+        // Check URL parameters for an auto-filter target (e.g., ?evidence=filename)
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetEvidence = urlParams.get('evidence');
+        if (targetEvidence) {
+            // Find if there is an "Evidence Source" or similar column to filter into
+            const sourceCol = dynamicColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
+            if (sourceCol && document.getElementById(`filter_${sourceCol}`)) {
+                document.getElementById(`filter_${sourceCol}`).value = targetEvidence;
+            } else {
+                // Fallback to global search if specific column isn't found
+                document.getElementById('globalSearch').value = targetEvidence;
+            }
+        }
         
         await runQuery();
 
