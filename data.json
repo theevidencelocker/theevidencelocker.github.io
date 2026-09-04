@@ -1029,7 +1029,7 @@
   {
     "year": 2023,
     "author": "Recon Infosec",
-    "os": "",
+    "os": "Windows",
     "category": "Triage",
     "evidenceUrl": "https://recon-cdn.s3.amazonaws.com/ctf/Recon_DFIR_CTF_Files.7z",
     "evidenceName": "Recon_DFIR_CTF_Files.7z",
