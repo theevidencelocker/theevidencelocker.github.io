@@ -74,9 +74,18 @@
     #header-logo-img { 
       max-width: 100%; 
       max-height: 250px;
+      border-radius: 8px;
+    }
+    
+    .header-logo-wrapper {
       grid-column: 2; 
-      justify-self: center;
-      border-radius: 8px; 
+      justify-self: center; 
+      display: flex;
+      cursor: pointer;
+    }
+    
+    .header-logo-wrapper:hover {
+      opacity: 0.9;
     }
 
     .header-controls { 
@@ -322,7 +331,7 @@
         gap: 15px;
       }
       
-      #header-logo-img { grid-column: auto; justify-self: auto; }
+      .header-logo-wrapper { grid-column: auto; justify-self: auto; }
       .header-info-stack { align-items: center; }
       .buttons-row { flex-direction: column; }
       .action-btn { max-width: 100%; }
@@ -335,7 +344,9 @@
   <div class="header-section">
     <div class="header-row">
 
-      <img id="header-logo-img" alt="Header Logo">
+      <a href="https://theevidencelocker.github.io/" class="header-logo-wrapper">
+        <img id="header-logo-img" alt="Header Logo">
+      </a>
       
       <div class="header-controls">
         <div class="header-info-stack">
@@ -371,7 +382,7 @@
   </div>
 
   <div class="tabs-container">
-    <a href="index.html" class="tab-btn">Main Compendium</a>
+    <a href="https://theevidencelocker.github.io/" class="tab-btn">Main Compendium</a>
     <a href="file_search.html" class="tab-btn active">File Search Engine</a>
   </div>
 
@@ -507,7 +518,7 @@
         }
         dynamicColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
         document.getElementById(`sort_icon_${col}`).innerText = sortDesc ? " ▼" : " ▲";
-        runQuery(true); // Reset to page 1 on sort
+        runQuery(true); 
     };
 
     window.prevPage = function() {
@@ -561,7 +572,6 @@
         });
 
         try {
-            // Run count query to get accurate filtered totals
             const countRes = await window.dbConn.query(`SELECT COUNT(*) as count ${baseQuery}`);
             filteredRowCount = Number(countRes.toArray()[0].count);
 
@@ -596,7 +606,6 @@
             }
             document.getElementById('tableBody').innerHTML = tbodyHtml;
             
-            // Format status text cleanly based on offset math
             const startRow = offset + 1;
             const endRow = Math.min(offset + pageSize, filteredRowCount);
             let statusText = `Displaying ${startRow.toLocaleString()}-${endRow.toLocaleString()} of ${filteredRowCount.toLocaleString()} filtered entries.`;
@@ -646,7 +655,6 @@
         if (sortCol) {
             baseQuery += ` ORDER BY "${sortCol}" ${sortDesc ? 'DESC' : 'ASC'} `;
         }
-        // Notice no LIMIT is appended here, exporting all filtered results!
 
         try {
             const result = await window.dbConn.query(baseQuery);
@@ -686,7 +694,6 @@
             link.click();
             document.body.removeChild(link);
             
-            // Restore proper page UI label once exported
             runQuery(false); 
             
         } catch (err) {

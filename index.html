@@ -74,9 +74,18 @@
     #header-logo-img { 
       max-width: 100%; 
       max-height: 250px;
+      border-radius: 8px;
+    }
+    
+    .header-logo-wrapper {
       grid-column: 2; 
       justify-self: center; 
-      border-radius: 8px;
+      display: flex;
+      cursor: pointer;
+    }
+    
+    .header-logo-wrapper:hover {
+      opacity: 0.9;
     }
 
     .header-controls { 
@@ -270,7 +279,7 @@
         gap: 15px;
       }
       
-      #header-logo-img { grid-column: auto; justify-self: auto; }
+      .header-logo-wrapper { grid-column: auto; justify-self: auto; }
       .header-info-stack { align-items: center; }
     }
   </style>
@@ -281,7 +290,9 @@
   <div class="header-section">
     <div class="header-row">
 
-      <img id="header-logo-img" alt="Header Logo">
+      <a href="https://theevidencelocker.github.io/" class="header-logo-wrapper">
+        <img id="header-logo-img" alt="Header Logo">
+      </a>
       
       <div class="header-controls">
         <div class="header-info-stack">
@@ -317,7 +328,7 @@
   </div>
 
   <div class="tabs-container">
-    <a href="index.html" class="tab-btn active">Main Compendium</a>
+    <a href="https://theevidencelocker.github.io/" class="tab-btn active">Main Compendium</a>
     <a href="file_search.html" class="tab-btn">File Search Engine</a>
   </div>
 
@@ -403,9 +414,6 @@
       if (manifestRes.ok) {
         const fileList = await manifestRes.json();
         availableFiles = new Set(fileList);
-        console.log("Loaded manifest files:", fileList);
-      } else {
-        console.warn("file_list.json returned status:", manifestRes.status);
       }
     } catch (e) {
       console.warn("Could not load file_list.json manifest:", e);
