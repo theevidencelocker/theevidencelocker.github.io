@@ -220,6 +220,16 @@
       border-top: 1px solid var(--border);
     }
 
+    .pagination-container {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+    }
+
     .table-responsive { 
       overflow-x: auto; 
       overflow-y: auto; 
@@ -372,7 +382,7 @@
           <input type="text" id="globalSearch" placeholder="Search across all columns..." oninput="handleInput()" disabled />
         </label>
         <label>Rows to Display:
-          <select id="rowLimit" onchange="runQuery()">
+          <select id="rowLimit" onchange="runQuery(true)">
               <option value="100">100</option>
               <option value="1000" selected>1,000</option>
               <option value="5000">5,000</option>
@@ -386,6 +396,12 @@
       </div>
 
       <div id="status-bar" class="status-inline">Downloading WebAssembly Engine (approx. 2MB)...</div>
+
+      <div id="pagination-controls" class="pagination-container">
+        <button id="prevPageBtn" class="action-btn" onclick="prevPage()" disabled style="max-width: 120px;">Previous</button>
+        <span id="pageInfo" style="font-weight: bold; font-size: 0.9em; min-width: 100px; text-align: center;">Page 1</span>
+        <button id="nextPageBtn" class="action-btn" onclick="nextPage()" disabled style="max-width: 120px;">Next</button>
+      </div>
     </div>
   </div>
 
@@ -464,6 +480,8 @@
     const currentTheme = localStorage.getItem("theme") || "dark"; 
     html.setAttribute("data-theme", currentTheme);
     themeIcon.textContent = (currentTheme === "dark") ? "☀️" : "🌓";
+    
+    fetchLastUpdated();
   }
 
   setupUI(); 
@@ -476,6 +494,8 @@
     let sortCol = null;
     let sortDesc = false;
     let totalRowCount = 0; 
+    let filteredRowCount = 0;
+    let currentPage = 1;
     const wrapTriggers = ['filename', 'file name', 'name', 'path', 'filepath', 'file path', 'entry path', 'source_image'];
 
     window.setSort = function(col) {
@@ -487,47 +507,82 @@
         }
         dynamicColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
         document.getElementById(`sort_icon_${col}`).innerText = sortDesc ? " ▼" : " ▲";
-        runQuery();
+        runQuery(true); // Reset to page 1 on sort
     };
 
-    window.runQuery = async function() {
+    window.prevPage = function() {
+        if (currentPage > 1) {
+            currentPage--;
+            runQuery(false);
+        }
+    };
+
+    window.nextPage = function() {
+        const pageSize = parseInt(document.getElementById('rowLimit').value);
+        if (currentPage * pageSize < filteredRowCount) {
+            currentPage++;
+            runQuery(false);
+        }
+    };
+
+    function updatePaginationUI() {
+        const pageSize = parseInt(document.getElementById('rowLimit').value);
+        const totalPages = Math.ceil(filteredRowCount / pageSize) || 1;
+
+        document.getElementById('pagination-controls').style.display = 'flex';
+        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${totalPages}`;
+
+        document.getElementById('prevPageBtn').disabled = (currentPage === 1);
+        document.getElementById('nextPageBtn').disabled = (currentPage === totalPages || totalPages === 0);
+    }
+
+    window.runQuery = async function(resetPage = true) {
+        if (resetPage) currentPage = 1;
+
         document.getElementById('status-bar').innerText = "Querying data...";
         document.getElementById('status-bar').style.color = "var(--text)"; 
         document.getElementById('tableBody').innerHTML = ""; 
 
-        let query = `SELECT * FROM current_evidence WHERE 1=1 `;
+        let baseQuery = `FROM current_evidence WHERE 1=1 `;
 
         const globalSearch = document.getElementById('globalSearch').value.trim();
         if (globalSearch) {
             const cleanTerm = globalSearch.replace(/'/g, "''"); 
             const colCasts = dynamicColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
-            query += ` AND (${colCasts.join(' OR ')}) `;
+            baseQuery += ` AND (${colCasts.join(' OR ')}) `;
         }
 
         dynamicColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
             if (filterVal) {
                 const cleanFilter = filterVal.replace(/'/g, "''");
-                query += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+                baseQuery += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
             }
         });
 
-        if (sortCol) {
-            query += ` ORDER BY "${sortCol}" ${sortDesc ? 'DESC' : 'ASC'} `;
-        }
-
-        const rowLimit = document.getElementById('rowLimit').value;
-        query += ` LIMIT ${rowLimit}`;
-
         try {
-            const result = await window.dbConn.query(query);
-            const rows = result.toArray();
-            
-            if (rows.length === 0) {
-                document.getElementById('status-bar').innerText = `Displaying 0 of ${totalRowCount.toLocaleString()} entries.`;
+            // Run count query to get accurate filtered totals
+            const countRes = await window.dbConn.query(`SELECT COUNT(*) as count ${baseQuery}`);
+            filteredRowCount = Number(countRes.toArray()[0].count);
+
+            if (filteredRowCount === 0) {
+                document.getElementById('status-bar').innerText = `No entries found. (Total: ${totalRowCount.toLocaleString()})`;
+                updatePaginationUI();
                 return;
             }
 
+            let dataQuery = `SELECT * ${baseQuery}`;
+            if (sortCol) {
+                dataQuery += ` ORDER BY "${sortCol}" ${sortDesc ? 'DESC' : 'ASC'} `;
+            }
+
+            const pageSize = parseInt(document.getElementById('rowLimit').value);
+            const offset = (currentPage - 1) * pageSize;
+            dataQuery += ` LIMIT ${pageSize} OFFSET ${offset}`;
+
+            const result = await window.dbConn.query(dataQuery);
+            const rows = result.toArray();
+            
             let tbodyHtml = '';
             for (let row of rows) {
                 tbodyHtml += '<tr>';
@@ -541,9 +596,17 @@
             }
             document.getElementById('tableBody').innerHTML = tbodyHtml;
             
-            let statusText = `Displaying ${rows.length.toLocaleString()} of ${totalRowCount.toLocaleString()} entries.`;
+            // Format status text cleanly based on offset math
+            const startRow = offset + 1;
+            const endRow = Math.min(offset + pageSize, filteredRowCount);
+            let statusText = `Displaying ${startRow.toLocaleString()}-${endRow.toLocaleString()} of ${filteredRowCount.toLocaleString()} filtered entries.`;
+            
+            if (filteredRowCount < totalRowCount) {
+                statusText += ` (Total Database: ${totalRowCount.toLocaleString()})`;
+            }
 
             document.getElementById('status-bar').innerText = statusText;
+            updatePaginationUI();
 
         } catch (err) {
             console.error(err);
@@ -557,35 +620,36 @@
         dynamicColumns.forEach(col => document.getElementById(`filter_${col}`).value = "");
         sortCol = null;
         dynamicColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
-        runQuery();
+        runQuery(true);
     };
 
     window.exportCSV = async function() {
-        document.getElementById('status-bar').innerText = "Preparing CSV export...";
+        document.getElementById('status-bar').innerText = "Preparing full CSV export (may take a moment)...";
 
-        let query = `SELECT * FROM current_evidence WHERE 1=1 `;
+        let baseQuery = `SELECT * FROM current_evidence WHERE 1=1 `;
 
         const globalSearch = document.getElementById('globalSearch').value.trim();
         if (globalSearch) {
             const cleanTerm = globalSearch.replace(/'/g, "''"); 
             const colCasts = dynamicColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
-            query += ` AND (${colCasts.join(' OR ')}) `;
+            baseQuery += ` AND (${colCasts.join(' OR ')}) `;
         }
 
         dynamicColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
             if (filterVal) {
                 const cleanFilter = filterVal.replace(/'/g, "''");
-                query += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+                baseQuery += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
             }
         });
 
         if (sortCol) {
-            query += ` ORDER BY "${sortCol}" ${sortDesc ? 'DESC' : 'ASC'} `;
+            baseQuery += ` ORDER BY "${sortCol}" ${sortDesc ? 'DESC' : 'ASC'} `;
         }
+        // Notice no LIMIT is appended here, exporting all filtered results!
 
         try {
-            const result = await window.dbConn.query(query);
+            const result = await window.dbConn.query(baseQuery);
             const rows = result.toArray();
             
             if (rows.length === 0) {
@@ -622,7 +686,8 @@
             link.click();
             document.body.removeChild(link);
             
-            document.getElementById('status-bar').innerText = `Exported ${rows.length} rows to CSV.`;
+            // Restore proper page UI label once exported
+            runQuery(false); 
             
         } catch (err) {
             console.error(err);
@@ -638,7 +703,7 @@
         document.getElementById('status-bar').style.color = "var(--text)";
 
         debounceTimer = setTimeout(() => {
-            runQuery();
+            runQuery(true);
         }, 400); 
     };
 
@@ -703,21 +768,18 @@
         document.getElementById('clearBtn').disabled = false;
         document.getElementById('exportBtn').disabled = false;
 
-        // Check URL parameters for an auto-filter target (e.g., ?evidence=filename)
         const urlParams = new URLSearchParams(window.location.search);
         const targetEvidence = urlParams.get('evidence');
         if (targetEvidence) {
-            // Find if there is an "Evidence Source" or similar column to filter into
             const sourceCol = dynamicColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
             if (sourceCol && document.getElementById(`filter_${sourceCol}`)) {
                 document.getElementById(`filter_${sourceCol}`).value = targetEvidence;
             } else {
-                // Fallback to global search if specific column isn't found
                 document.getElementById('globalSearch').value = targetEvidence;
             }
         }
         
-        await runQuery();
+        await runQuery(true);
 
     } catch (err) {
         console.error(err);
