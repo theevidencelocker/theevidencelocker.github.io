@@ -257,7 +257,7 @@
     }
     
     th, td { 
-      text-align: left; 
+      text-align: center; 
       padding: 10px; 
       border-bottom: 1px solid var(--border); 
       vertical-align: middle;
@@ -271,7 +271,6 @@
       top: 0;
       z-index: 10;
       box-shadow: 0 2px 2px -1px rgba(0,0,0,0.4); 
-      text-align: center; 
     }
     
     tbody tr:nth-child(even) { background: var(--alt); }
@@ -301,6 +300,25 @@
         min-width: 200px;
         max-width: 600px;
     }
+
+    .copy-container { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+    .copy-tooltip { 
+      visibility: hidden; 
+      background: var(--tooltip-bg); 
+      color: var(--tooltip-text); 
+      padding: 6px 10px; 
+      border-radius: 4px; 
+      position: absolute; 
+      bottom: 125%; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      opacity: 0; 
+      transition: opacity 0.3s; 
+      pointer-events: none; 
+      white-space: nowrap; 
+      z-index: 100;
+    }
+    .copy-container:hover .copy-tooltip { visibility: visible; opacity: 1; }
 
     .footer-section { margin-top: auto; text-align: center; padding-top: 40px; }
     .powered-by { font-size: 0.9rem; font-weight: bold; color: var(--icon); text-transform: uppercase; letter-spacing: 1px; }
@@ -388,6 +406,9 @@
 
   <div id="filter-wrapper">
     <div class="controls-panel">
+      
+      <div id="target-metadata" style="text-align: center; margin-bottom: 15px; display: none;"></div>
+
       <div class="inputs-row">
         <label>Global Search:
           <input type="text" id="globalSearch" placeholder="Search across all columns..." oninput="handleInput()" disabled />
@@ -410,7 +431,11 @@
 
       <div id="pagination-controls" class="pagination-container">
         <button id="prevPageBtn" class="action-btn" onclick="prevPage()" disabled style="max-width: 120px;">Previous</button>
-        <span id="pageInfo" style="font-weight: bold; font-size: 0.9em; min-width: 100px; text-align: center;">Page 1</span>
+        <span style="font-weight: bold; font-size: 0.9em; text-align: center; white-space: nowrap;">
+          Page 
+          <input type="number" id="pageInput" value="1" min="1" style="width: 60px; text-align: center; padding: 4px; margin: 0 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--input); color: var(--text);" onchange="goToPage()"> 
+          of <span id="totalPagesInfo">1</span>
+        </span>
         <button id="nextPageBtn" class="action-btn" onclick="nextPage()" disabled style="max-width: 120px;">Next</button>
       </div>
     </div>
@@ -502,11 +527,13 @@
     import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm/+esm';
 
     let dynamicColumns = [];
+    let displayColumns = [];
     let sortCol = null;
     let sortDesc = false;
     let totalRowCount = 0; 
     let filteredRowCount = 0;
     let currentPage = 1;
+    let targetHash = null;
     const wrapTriggers = ['filename', 'file name', 'name', 'path', 'filepath', 'file path', 'entry path', 'source_image'];
 
     window.setSort = function(col) {
@@ -516,7 +543,7 @@
             sortCol = col;
             sortDesc = false; 
         }
-        dynamicColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
+        displayColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
         document.getElementById(`sort_icon_${col}`).innerText = sortDesc ? " ▼" : " ▲";
         runQuery(true); 
     };
@@ -536,12 +563,34 @@
         }
     };
 
+    window.goToPage = function() {
+        const pageSize = parseInt(document.getElementById('rowLimit').value);
+        const totalPages = Math.ceil(filteredRowCount / pageSize) || 1;
+        let inputPage = parseInt(document.getElementById('pageInput').value);
+
+        if (isNaN(inputPage) || inputPage < 1) {
+            inputPage = 1;
+        } else if (inputPage > totalPages) {
+            inputPage = totalPages;
+        }
+
+        if (currentPage !== inputPage) {
+            currentPage = inputPage;
+            runQuery(false);
+        } else {
+            document.getElementById('pageInput').value = currentPage;
+        }
+    };
+
     function updatePaginationUI() {
         const pageSize = parseInt(document.getElementById('rowLimit').value);
         const totalPages = Math.ceil(filteredRowCount / pageSize) || 1;
 
         document.getElementById('pagination-controls').style.display = 'flex';
-        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${totalPages}`;
+        
+        document.getElementById('pageInput').value = currentPage;
+        document.getElementById('pageInput').max = totalPages;
+        document.getElementById('totalPagesInfo').innerText = totalPages;
 
         document.getElementById('prevPageBtn').disabled = (currentPage === 1);
         document.getElementById('nextPageBtn').disabled = (currentPage === totalPages || totalPages === 0);
@@ -555,15 +604,19 @@
         document.getElementById('tableBody').innerHTML = ""; 
 
         let baseQuery = `FROM current_evidence WHERE 1=1 `;
+        
+        if (targetHash && dynamicColumns.includes('evidence_id')) {
+            baseQuery += ` AND CAST("evidence_id" AS VARCHAR) = '${targetHash.replace(/'/g, "''")}' `;
+        }
 
         const globalSearch = document.getElementById('globalSearch').value.trim();
         if (globalSearch) {
             const cleanTerm = globalSearch.replace(/'/g, "''"); 
-            const colCasts = dynamicColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
+            const colCasts = displayColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
             baseQuery += ` AND (${colCasts.join(' OR ')}) `;
         }
 
-        dynamicColumns.forEach(col => {
+        displayColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
             if (filterVal) {
                 const cleanFilter = filterVal.replace(/'/g, "''");
@@ -593,14 +646,31 @@
             const result = await window.dbConn.query(dataQuery);
             const rows = result.toArray();
             
+            const sourceColName = displayColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
+            
             let tbodyHtml = '';
             for (let row of rows) {
                 tbodyHtml += '<tr>';
-                for (let col of dynamicColumns) {
+                for (let col of displayColumns) {
                     const isWrap = wrapTriggers.some(trigger => col.toLowerCase().includes(trigger));
                     const wrapClass = isWrap ? 'wrap-text' : '';
-                    const cellData = row[col] !== null ? row[col] : '';
-                    tbodyHtml += `<td class="${wrapClass}">${cellData}</td>`;
+                    
+                    // Conditionally align 'path' columns to the left, center everything else
+                    const alignStyle = col.toLowerCase().includes('path') ? 'text-align: left;' : 'text-align: center;';
+                    
+                    let cellData = row[col] !== null ? row[col] : '';
+                    
+                    if (col === sourceColName && row['evidence_id'] && window.evidenceMetaMap[row['evidence_id']]) {
+                        const osMeta = window.evidenceMetaMap[row['evidence_id']].os || 'Unknown OS';
+                        
+                        // Modified tooltip CSS: anchored to the left (left: 0; transform: none) to prevent clipping
+                        cellData = `<div class="copy-container" style="border-bottom: 1px dotted var(--icon); cursor: help;">
+                                      ${cellData}
+                                      <span class="copy-tooltip" style="font-family: sans-serif; font-size: 0.9em; left: 0; transform: translateY(-5px); bottom: 100%;">💻 OS: ${osMeta}</span>
+                                    </div>`;
+                    }
+
+                    tbodyHtml += `<td class="${wrapClass}" style="${alignStyle}">${cellData}</td>`;
                 }
                 tbodyHtml += '</tr>';
             }
@@ -626,9 +696,14 @@
 
     window.clearFilters = function() {
         document.getElementById('globalSearch').value = "";
-        dynamicColumns.forEach(col => document.getElementById(`filter_${col}`).value = "");
+        displayColumns.forEach(col => document.getElementById(`filter_${col}`).value = "");
         sortCol = null;
-        dynamicColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
+        displayColumns.forEach(c => document.getElementById(`sort_icon_${c}`).innerText = "");
+        
+        targetHash = null;
+        document.getElementById('target-metadata').style.display = 'none';
+        
+        window.history.pushState({}, '', window.location.pathname);
         runQuery(true);
     };
 
@@ -636,15 +711,19 @@
         document.getElementById('status-bar').innerText = "Preparing full CSV export (may take a moment)...";
 
         let baseQuery = `SELECT * FROM current_evidence WHERE 1=1 `;
+        
+        if (targetHash && dynamicColumns.includes('evidence_id')) {
+            baseQuery += ` AND CAST("evidence_id" AS VARCHAR) = '${targetHash.replace(/'/g, "''")}' `;
+        }
 
         const globalSearch = document.getElementById('globalSearch').value.trim();
         if (globalSearch) {
             const cleanTerm = globalSearch.replace(/'/g, "''"); 
-            const colCasts = dynamicColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
+            const colCasts = displayColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
             baseQuery += ` AND (${colCasts.join(' OR ')}) `;
         }
 
-        dynamicColumns.forEach(col => {
+        displayColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
             if (filterVal) {
                 const cleanFilter = filterVal.replace(/'/g, "''");
@@ -665,9 +744,9 @@
                 return;
             }
 
-            const headers = dynamicColumns.map(col => `"${col}"`).join(',');
+            const headers = displayColumns.map(col => `"${col}"`).join(',');
             const csvRows = rows.map(row => {
-                return dynamicColumns.map(col => {
+                return displayColumns.map(col => {
                     let val = row[col] !== null ? row[col].toString() : '';
                     val = val.replace(/"/g, '""');
                     return `"${val}"`;
@@ -718,11 +797,14 @@
         const thead = document.getElementById('tableHead');
         let headerRow = '<tr>';
         
-        dynamicColumns.forEach(col => {
+        displayColumns.forEach(col => {
             const isWrap = wrapTriggers.some(trigger => col.toLowerCase().includes(trigger));
             const wrapClass = isWrap ? 'wrap-text' : '';
+            
+            // Align header text to match the body rows
+            const alignStyle = col.toLowerCase().includes('path') ? 'text-align: left;' : 'text-align: center;';
 
-            headerRow += `<th class="${wrapClass}">
+            headerRow += `<th class="${wrapClass}" style="${alignStyle}">
                             <div class="sortable" onclick="setSort('${col}')" style="margin-bottom: 8px;">
                                 ${col} <span id="sort_icon_${col}"></span>
                             </div>
@@ -747,6 +829,27 @@
     window.dbConn = await db.connect();
 
     try {
+        const urlParams = new URLSearchParams(window.location.search);
+        targetHash = urlParams.get('id');
+        const legacyEvidence = urlParams.get('evidence');
+
+        window.evidenceMetaMap = {};
+        const metaRes = await fetch(`data.json?v=${new Date().getTime()}`);
+        if (metaRes.ok) {
+            const metaData = await metaRes.json();
+            metaData.forEach(item => {
+                if (item.hash) window.evidenceMetaMap[item.hash] = item;
+            });
+            
+            if (targetHash && window.evidenceMetaMap[targetHash]) {
+                const item = window.evidenceMetaMap[targetHash];
+                const metaDiv = document.getElementById('target-metadata');
+                metaDiv.style.display = 'block';
+                metaDiv.innerHTML = `<div style="font-size: 1.1em; color: var(--link); margin-bottom: 5px;">Searching Evidence: <strong>${item.evidenceName}</strong></div>
+                                     <div style="font-size: 0.9em; color: var(--icon);">OS: ${item.os || 'Unknown'} | Category: ${item.category || 'Unknown'}</div>`;
+            }
+        }
+
         document.getElementById('status-bar').innerText = "Fetching file manifest...";
         
         const manifestRes = await fetch(`file_listing/file_list.json?v=${new Date().getTime()}`);
@@ -769,20 +872,20 @@
         const descResult = await window.dbConn.query(`DESCRIBE current_evidence`);
         dynamicColumns = descResult.toArray().map(row => row.column_name);
         
+        displayColumns = dynamicColumns.filter(c => c !== 'evidence_id');
+        
         buildTableStructure();
         
         document.getElementById('globalSearch').disabled = false;
         document.getElementById('clearBtn').disabled = false;
         document.getElementById('exportBtn').disabled = false;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const targetEvidence = urlParams.get('evidence');
-        if (targetEvidence) {
-            const sourceCol = dynamicColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
+        if (!targetHash && legacyEvidence) {
+            const sourceCol = displayColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
             if (sourceCol && document.getElementById(`filter_${sourceCol}`)) {
-                document.getElementById(`filter_${sourceCol}`).value = targetEvidence;
+                document.getElementById(`filter_${sourceCol}`).value = legacyEvidence;
             } else {
-                document.getElementById('globalSearch').value = targetEvidence;
+                document.getElementById('globalSearch').value = legacyEvidence;
             }
         }
         
