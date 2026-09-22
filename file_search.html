@@ -661,11 +661,13 @@
                     let cellData = row[col] !== null ? row[col] : '';
                     
                     if (col === sourceColName && row['evidence_id'] && window.evidenceMetaMap[row['evidence_id']]) {
-                        const osMeta = window.evidenceMetaMap[row['evidence_id']].os || 'Unknown OS';
+                        const itemMeta = window.evidenceMetaMap[row['evidence_id']];
+                        const osMeta = itemMeta.os || 'Unknown OS';
+                        const searchUrl = `index.html?search=${encodeURIComponent(itemMeta.hash)}`;
                         
-                        // Modified tooltip CSS: anchored to the left (left: 0; transform: none) to prevent clipping
-                        cellData = `<div class="copy-container" style="border-bottom: 1px dotted var(--icon); cursor: help;">
-                                      ${cellData}
+                        // Wrap the text in a link back to index.html, retaining the tooltip
+                        cellData = `<div class="copy-container" style="border-bottom: 1px dotted var(--icon); cursor: pointer;">
+                                      <a href="${searchUrl}" title="View in Main Compendium" style="color: var(--link); text-decoration: none;">${cellData}</a>
                                       <span class="copy-tooltip" style="font-family: sans-serif; font-size: 0.9em; left: 0; transform: translateY(-5px); bottom: 100%;">💻 OS: ${osMeta}</span>
                                     </div>`;
                     }

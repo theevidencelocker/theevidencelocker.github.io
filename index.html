@@ -353,7 +353,7 @@
           <th data-sort="category">Category <span class="sort-icon"></span></th>
           <th data-sort="evidenceName">Evidence File <span class="sort-icon"></span></th>
           <th>Explore File List</th>
-		  <th data-sort="filesize">File Size <span class="sort-icon"></span></th>
+          <th data-sort="filesize">File Size <span class="sort-icon"></span></th>
           <th>Password</th>
           <th>Hash</th>
           <th data-sort="event">Event <span class="sort-icon"></span></th>
@@ -408,6 +408,7 @@
   }
 
   let allData = [], availableFiles = new Set(), sortKey=null, sortDir=1;
+  
   async function loadData() {
     try {
       const manifestRes = await fetch(`file_listing/file_list.json?v=${new Date().getTime()}`);
@@ -432,6 +433,14 @@
 
     allData = await res.json();
     render(allData);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    
+    if (searchQuery) {
+        document.getElementById('search-global').value = searchQuery;
+        applyFilters();
+    }
   }
 
   function render(data) {
@@ -466,8 +475,8 @@
         <td>${d.os}</td>
         <td>${d.category}</td>
         <td><a href="${d.evidenceUrl}" target="_blank">${d.evidenceName}</a></td>
-        <td>${(isFileAvailable && d.hash) ? `<a href="file_search.html?id=${d.hash}" target="_blank" rel="noopener noreferrer" title="Explore File List">${ICONS.explore}</a>` : `<span style="opacity: 0.3; cursor: not-allowed;" title="File Search not generated yet">${ICONS.explore}</span>`}</td>
-		<td>${d.filesize}</td>
+        <td>${(isFileAvailable && d.hash) ? `<a href="file_search.html?id=${d.hash}" title="Explore File List">${ICONS.explore}</a>` : `<span style="opacity: 0.3; cursor: not-allowed;" title="File Search not generated yet">${ICONS.explore}</span>`}</td>
+        <td>${d.filesize}</td>
         <td>${d.password ? `<div class="copy-container" onclick="copyToClipboard('${d.password}','pw-${i}')">${ICONS.password}<span id="pw-${i}" class="copy-tooltip">${d.password}</span></div>` : ""}</td>
         <td>${d.hash ? `<div class="copy-container" onclick="copyToClipboard('${d.hash}','hash-${i}')">${ICONS.hash}<span id="hash-${i}" class="copy-tooltip">${d.hash}</span></div>` : ""}</td>
         <td>${d.event}</td>
@@ -531,6 +540,7 @@
       ["search-global","filter-year","filter-author","filter-os","filter-category"].forEach(id=>document.getElementById(id).value="");
       sortKey = null;
       document.querySelectorAll(".sort-icon").forEach(icon => icon.textContent = "");
+      window.history.pushState({}, '', window.location.pathname);
       applyFilters();
   });
   
