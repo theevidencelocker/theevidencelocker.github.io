@@ -616,10 +616,13 @@
             baseQuery += ` AND (${colCasts.join(' OR ')}) `;
         }
 
+        const sourceColName = displayColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
+
         displayColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
             if (filterVal) {
                 const cleanFilter = filterVal.replace(/'/g, "''");
+                
                 baseQuery += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
             }
         });
@@ -646,8 +649,6 @@
             const result = await window.dbConn.query(dataQuery);
             const rows = result.toArray();
             
-            const sourceColName = displayColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
-            
             let tbodyHtml = '';
             for (let row of rows) {
                 tbodyHtml += '<tr>';
@@ -655,8 +656,11 @@
                     const isWrap = wrapTriggers.some(trigger => col.toLowerCase().includes(trigger));
                     const wrapClass = isWrap ? 'wrap-text' : '';
                     
-                    // Conditionally align 'path' columns to the left, center everything else
+                    const isExt = col.toLowerCase().includes('extension');
                     const alignStyle = col.toLowerCase().includes('path') ? 'text-align: left;' : 'text-align: center;';
+                    // Replaced width/ellipsis rules with standard text wrapping and a generous max-width to allow multi-line extensions
+                    const extStyle = isExt ? 'white-space: normal; word-break: break-all; max-width: 250px;' : '';
+                    const combinedStyle = `${alignStyle} ${extStyle}`;
                     
                     let cellData = row[col] !== null ? row[col] : '';
                     
@@ -665,14 +669,13 @@
                         const osMeta = itemMeta.os || 'Unknown OS';
                         const searchUrl = `index.html?search=${encodeURIComponent(itemMeta.hash)}`;
                         
-                        // Wrap the text in a link back to index.html, retaining the tooltip
                         cellData = `<div class="copy-container" style="border-bottom: 1px dotted var(--icon); cursor: pointer;">
                                       <a href="${searchUrl}" title="View in Main Compendium" style="color: var(--link); text-decoration: none;">${cellData}</a>
                                       <span class="copy-tooltip" style="font-family: sans-serif; font-size: 0.9em; left: 0; transform: translateY(-5px); bottom: 100%;">💻 OS: ${osMeta}</span>
                                     </div>`;
                     }
 
-                    tbodyHtml += `<td class="${wrapClass}" style="${alignStyle}">${cellData}</td>`;
+                    tbodyHtml += `<td class="${wrapClass}" style="${combinedStyle}">${cellData}</td>`;
                 }
                 tbodyHtml += '</tr>';
             }
@@ -724,6 +727,8 @@
             const colCasts = displayColumns.map(c => `CAST("${c}" AS VARCHAR) ILIKE '%${cleanTerm}%'`);
             baseQuery += ` AND (${colCasts.join(' OR ')}) `;
         }
+
+        const sourceColName = displayColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
 
         displayColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
@@ -795,23 +800,46 @@
         }, 400); 
     };
 
-    function buildTableStructure() {
+    async function buildTableStructure() {
         const thead = document.getElementById('tableHead');
         let headerRow = '<tr>';
+        
+        const sourceColName = displayColumns.find(c => c.toLowerCase().includes('evidence') || c.toLowerCase().includes('source'));
+        let sourceOptions = [];
+        
+        if (sourceColName) {
+            try {
+                const res = await window.dbConn.query(`SELECT DISTINCT "${sourceColName}" FROM current_evidence WHERE "${sourceColName}" IS NOT NULL`);
+                sourceOptions = res.toArray().map(r => r[sourceColName]).sort();
+            } catch (err) {
+                console.error("Error fetching distinct sources:", err);
+            }
+        }
         
         displayColumns.forEach(col => {
             const isWrap = wrapTriggers.some(trigger => col.toLowerCase().includes(trigger));
             const wrapClass = isWrap ? 'wrap-text' : '';
             
-            // Align header text to match the body rows
-            const alignStyle = col.toLowerCase().includes('path') ? 'text-align: left;' : 'text-align: center;';
+            const isExt = col.toLowerCase().includes('extension');
+            const alignStyle = 'text-align: center;';
+            const extStyle = isExt ? 'white-space: normal; word-break: break-all; max-width: 250px;' : '';
+            const combinedStyle = `${alignStyle} ${extStyle}`;
 
-            headerRow += `<th class="${wrapClass}" style="${alignStyle}">
+            headerRow += `<th class="${wrapClass}" style="${combinedStyle}">
                             <div class="sortable" onclick="setSort('${col}')" style="margin-bottom: 8px;">
                                 ${col} <span id="sort_icon_${col}"></span>
-                            </div>
-                            <input type="text" class="column-filter" id="filter_${col}" placeholder="Filter..." oninput="handleInput()">
-                          </th>`;
+                            </div>`;
+                            
+            if (col === sourceColName) {
+                headerRow += `<input type="text" class="column-filter" id="filter_${col}" list="datalist_${col}" placeholder="Filter or select..." oninput="handleInput()">
+                              <datalist id="datalist_${col}">
+                                ${sourceOptions.map(opt => `<option value="${opt.replace(/"/g, '&quot;')}"></option>`).join('')}
+                              </datalist>`;
+            } else {
+                headerRow += `<input type="text" class="column-filter" id="filter_${col}" placeholder="Filter..." oninput="handleInput()">`;
+            }
+            
+            headerRow += `</th>`;
         });
         
         headerRow += '</tr>';
@@ -876,7 +904,7 @@
         
         displayColumns = dynamicColumns.filter(c => c !== 'evidence_id');
         
-        buildTableStructure();
+        await buildTableStructure();
         
         document.getElementById('globalSearch').disabled = false;
         document.getElementById('clearBtn').disabled = false;
