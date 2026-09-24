@@ -700,6 +700,12 @@
     };
 
     window.clearFilters = function() {
+        // If the page was loaded with a specific file targeted, reload completely to mount everything
+        if (targetHash || new URLSearchParams(window.location.search).get('evidence')) {
+            window.location.href = window.location.pathname;
+            return;
+        }
+
         document.getElementById('globalSearch').value = "";
         displayColumns.forEach(col => document.getElementById(`filter_${col}`).value = "");
         sortCol = null;
@@ -885,16 +891,36 @@
         const manifestRes = await fetch(`file_listing/file_list.json?v=${new Date().getTime()}`);
         if (!manifestRes.ok) throw new Error("Could not load file_list.json manifest.");
         
-        const parquetFiles = await manifestRes.json();
-        if (parquetFiles.length === 0) throw new Error("No Parquet files found in manifest.");
+        const manifestData = await manifestRes.json();
+        if (manifestData.length === 0) throw new Error("No Parquet files found in manifest.");
 
-        document.getElementById('status-bar').innerText = "Mounting Parquet files...";
+        // 1. Filter the manifest to only mount the required file(s)
+        let filesToMount = manifestData;
         
-        // Extract the filename whether the manifest uses objects or raw strings
-        const fileUrls = parquetFiles.map(item => {
+        if (targetHash) {
+            filesToMount = manifestData.filter(item => {
+                const itemHash = typeof item === 'object' ? item.hash : null;
+                return itemHash && String(itemHash).trim().toLowerCase() === String(targetHash).trim().toLowerCase();
+            });
+            // Fallback to all files if the hash somehow isn't in the manifest
+            if (filesToMount.length === 0) filesToMount = manifestData; 
+            
+        } else if (legacyEvidence) {
+            filesToMount = manifestData.filter(item => {
+                const fileName = typeof item === 'object' ? item.file : item;
+                return fileName.toLowerCase().includes(legacyEvidence.toLowerCase());
+            });
+            if (filesToMount.length === 0) filesToMount = manifestData;
+        }
+
+        document.getElementById('status-bar').innerText = `Mounting ${filesToMount.length} Parquet file(s)...`;
+        
+        // 2. Build URLs ONLY for the filtered list
+        const fileUrls = filesToMount.map(item => {
             const fileName = typeof item === 'object' ? item.file : item;
             return new URL(`file_listing/${encodeURIComponent(fileName)}?v=${new Date().getTime()}`, window.location.href).href;
         });
+        
         const sqlUrlArray = `[${fileUrls.map(url => `'${url}'`).join(', ')}]`;
         
         await window.dbConn.query(`DROP VIEW IF EXISTS current_evidence;`);
