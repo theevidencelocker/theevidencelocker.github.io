@@ -12,6 +12,10 @@
         "hash": "56EBD62968D37B67E656AD58EEE7A985"
     },
     {
+        "file": "2022 CTF - Android-001.tar.parquet",
+        "hash": "131CF2634BD6907B53D23150D4EA24EA"
+    },
+    {
         "file": "2022 CTF - iOS Full File System.zip.parquet",
         "hash": "4FDC02C7104350B7086F0CEFD8937E52"
     },
@@ -30,6 +34,10 @@
     {
         "file": "Android.7z.parquet",
         "hash": "7188177ACDC73A5EDB8F6B969E9D6881"
+    },
+    {
+        "file": "android_13_data.tar.gz.parquet",
+        "hash": "74B97F0AFE6CC0A79E81C39F3D01F4EF"
     },
     {
         "file": "Android_14_Public_Image.tar.gz.parquet",
