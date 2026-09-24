@@ -8,6 +8,10 @@
         "hash": "A8E9DF3FC94C5C66F8CA8824773C0332"
     },
     {
+        "file": "00008110-000925383620A01E_files_full.zip.parquet",
+        "hash": "56EBD62968D37B67E656AD58EEE7A985"
+    },
+    {
         "file": "2022 CTF - iOS Full File System.zip.parquet",
         "hash": "4FDC02C7104350B7086F0CEFD8937E52"
     },
@@ -106,6 +110,10 @@
     {
         "file": "mus2023 - Google Pixel 3a XL Logical Image - Data.tar.parquet",
         "hash": "D9EE2D36A5D632C0F694C73F7DEDF878"
+    },
+    {
+        "file": "mus2024 - Google Pixel 3a XL Logical Image - Data.tar.parquet",
+        "hash": "11B304C12314D2CE35219CAB0C98569E"
     },
     {
         "file": "Pixel_Image2.tar.parquet",
