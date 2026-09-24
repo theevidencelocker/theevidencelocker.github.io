@@ -52,6 +52,10 @@
         "hash": "374891EAE84E4D380C632B9B47ACBB9D"
     },
     {
+        "file": "backup.tar.xz.parquet",
+        "hash": "073042B2BE28C2A0033BFD5854C7B7BA"
+    },
+    {
         "file": "BelkaCTF_6_CASE240405_D201AP.tar.parquet",
         "hash": "874C9A9D0D274B9BA5245116AA6F2A67"
     },
@@ -80,6 +84,10 @@
         "hash": "514BF12C5862B20937F9\u00adF808932B1368"
     },
     {
+        "file": "HC-GH-2025-SF-0089 MOMO FRAUD.zip.parquet",
+        "hash": "4FB046B756CBDD9949143A857D2E9A23"
+    },
+    {
         "file": "iOS 14-3 - Apple iPhone SE.tar.parquet",
         "hash": "7E7CB4D7E6204089758BF41D5D2C5EFC"
     },
@@ -94,6 +102,10 @@
     {
         "file": "iOS_15_Public_Image.tar.gz.parquet",
         "hash": "B1EC40D5CD835621326B821D6FA12FF5"
+    },
+    {
+        "file": "iOS_16_Public_Image.tar.gz.parquet",
+        "hash": "2DE01264A2D25C132FFC51BAC06B8BCF"
     },
     {
         "file": "iOS_17_Public_Image.tar.gz.parquet",
