@@ -12,6 +12,10 @@
         "hash": "56EBD62968D37B67E656AD58EEE7A985"
     },
     {
+        "file": "2021 CTF - iOS.zip.parquet",
+        "hash": "DB9749679B1A4042C3B27DC1ADA69C24"
+    },
+    {
         "file": "2022 CTF - Android-001.tar.parquet",
         "hash": "131CF2634BD6907B53D23150D4EA24EA"
     },
@@ -32,8 +36,16 @@
         "hash": "3DBE94D72CB6C76F03E0995F1F20E55E"
     },
     {
+        "file": "3_Samsung GSM_SM-G973F_DS Galaxy S10.zip.parquet",
+        "hash": "A86049E46D1E19A961A3AECD97B78BD5"
+    },
+    {
         "file": "Android.7z.parquet",
         "hash": "7188177ACDC73A5EDB8F6B969E9D6881"
+    },
+    {
+        "file": "android_12.zip.parquet",
+        "hash": "B9CB5E213B765D5D649A9634E119B3AA"
     },
     {
         "file": "android_13_data.tar.gz.parquet",
@@ -70,6 +82,10 @@
     {
         "file": "BelkaCTF_7_CASE250722_EXH250723-2.tar.parquet",
         "hash": "B803E745A2A2F6547472EF1E0E649A2C"
+    },
+    {
+        "file": "BelkaDayUS_CTF_IMAGE.7z.parquet",
+        "hash": "FB77E0BCC993EB11D125213D81E63616"
     },
     {
         "file": "c623fbd7e91b041e07a68f8523f53a35973e475d.zip.parquet",
