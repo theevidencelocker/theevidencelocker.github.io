@@ -890,7 +890,11 @@
 
         document.getElementById('status-bar').innerText = "Mounting Parquet files...";
         
-        const fileUrls = parquetFiles.map(file => new URL(`file_listing/${encodeURIComponent(file)}?v=${new Date().getTime()}`, window.location.href).href);
+        // Extract the filename whether the manifest uses objects or raw strings
+        const fileUrls = parquetFiles.map(item => {
+            const fileName = typeof item === 'object' ? item.file : item;
+            return new URL(`file_listing/${encodeURIComponent(fileName)}?v=${new Date().getTime()}`, window.location.href).href;
+        });
         const sqlUrlArray = `[${fileUrls.map(url => `'${url}'`).join(', ')}]`;
         
         await window.dbConn.query(`DROP VIEW IF EXISTS current_evidence;`);

@@ -1,36 +1,138 @@
 [
-    "00008101-0010541A1130001E_files_full-001.zip.parquet",
-    "00008110-0008196A2299401E_files_full.zip.parquet",
-    "2022 CTF - iOS Full File System.zip.parquet",
-    "2025CellebriteCTF_AnneLockwood.zip.parquet",
-    "2025CellebriteCTF_DexterKing.zip.parquet",
-    "2025CellebriteCTF_KevinMallory.zip.parquet",
-    "Android.7z.parquet",
-    "Android_14_Public_Image.tar.gz.parquet",
-    "android_7.tar.gz.parquet",
-    "android_8.tar.gz.parquet",
-    "android_9.tar.gz.parquet",
-    "Apple iOS.7z.parquet",
-    "BelkaCTF_6_CASE240405_D201AP.tar.parquet",
-    "BelkaCTF_7_CASE250722_EXH250723-2.tar.parquet",
-    "c623fbd7e91b041e07a68f8523f53a35973e475d.zip.parquet",
-    "CellebriteCTF24_Felix.zip.parquet",
-    "CellebriteCTF24_Otto.zip.parquet",
-    "CellebriteCTF24_Russell.zip.parquet",
-    "CellebriteCTF24_Sharon.zip.parquet",
-    "iOS 14-3 - Apple iPhone SE.tar.parquet",
-    "ios_13_3_1.zip.parquet",
-    "ios_13_4_1.zip.parquet",
-    "iOS_15_Public_Image.tar.gz.parquet",
-    "iOS_17_Public_Image.tar.gz.parquet",
-    "iPhone12.zip.parquet",
-    "iPhone14Plus.zip.parquet",
-    "mus2023 - Google Pixel 3a XL Logical Image - Data.tar.parquet",
-    "Pixel_Image2.tar.parquet",
-    "SamsungA53.zip.parquet",
-    "SamsungS20.zip.parquet",
-    "sysdiagnose_2021.02.19_16-13-39-0500_iPhone-OS_iPhone_18C66.tar.gz.parquet",
-    "sysdiagnose_2023.05.24_13-29-15-0700_iPhone-OS_iPhone_19H349.tar.gz.parquet",
-    "sysdiagnose_2025.04.07_08-06-18-0700_iPhone-OS_iPhone_20A362.tar.gz.parquet",
-    "UserB2.7z.parquet"
+    {
+        "file": "00008101-0010541A1130001E_files_full-001.zip.parquet",
+        "hash": "067606649297D7ADCF6082E5ED0ACBB9 "
+    },
+    {
+        "file": "00008110-0008196A2299401E_files_full.zip.parquet",
+        "hash": "A8E9DF3FC94C5C66F8CA8824773C0332"
+    },
+    {
+        "file": "2022 CTF - iOS Full File System.zip.parquet",
+        "hash": "4FDC02C7104350B7086F0CEFD8937E52"
+    },
+    {
+        "file": "2025CellebriteCTF_AnneLockwood.zip.parquet",
+        "hash": "D2E42194B1B16E35FBB0F84EEF924FB5"
+    },
+    {
+        "file": "2025CellebriteCTF_DexterKing.zip.parquet",
+        "hash": "4D455F968C61EC43960AB6B66B55AC4A"
+    },
+    {
+        "file": "2025CellebriteCTF_KevinMallory.zip.parquet",
+        "hash": "3DBE94D72CB6C76F03E0995F1F20E55E"
+    },
+    {
+        "file": "Android.7z.parquet",
+        "hash": "7188177ACDC73A5EDB8F6B969E9D6881"
+    },
+    {
+        "file": "Android_14_Public_Image.tar.gz.parquet",
+        "hash": "2F9578715A315C0897E51EF9C1007F2D"
+    },
+    {
+        "file": "android_7.tar.gz.parquet",
+        "hash": "96043ECCD065AA856ECEAF6D8DFAC032"
+    },
+    {
+        "file": "android_8.tar.gz.parquet",
+        "hash": "711C38792980FB8ADB3646BB8132BF29"
+    },
+    {
+        "file": "android_9.tar.gz.parquet",
+        "hash": "B5D663829FD61A4B05690C50130F3EB2"
+    },
+    {
+        "file": "Apple iOS.7z.parquet",
+        "hash": "374891EAE84E4D380C632B9B47ACBB9D"
+    },
+    {
+        "file": "BelkaCTF_6_CASE240405_D201AP.tar.parquet",
+        "hash": "874C9A9D0D274B9BA5245116AA6F2A67"
+    },
+    {
+        "file": "BelkaCTF_7_CASE250722_EXH250723-2.tar.parquet",
+        "hash": "B803E745A2A2F6547472EF1E0E649A2C"
+    },
+    {
+        "file": "c623fbd7e91b041e07a68f8523f53a35973e475d.zip.parquet",
+        "hash": "B5BE45480D87FD65C1F9C41FB2D4ECC1"
+    },
+    {
+        "file": "CellebriteCTF24_Felix.zip.parquet",
+        "hash": "986FB9022E9AF1BF1431\u00ad26BE4E65AAAF"
+    },
+    {
+        "file": "CellebriteCTF24_Otto.zip.parquet",
+        "hash": "54E581D2209A62EB431\u00adB06CEFD786B1A"
+    },
+    {
+        "file": "CellebriteCTF24_Russell.zip.parquet",
+        "hash": "E182FC05A9B83FCACC\u00ad9582DB92CEF6C8"
+    },
+    {
+        "file": "CellebriteCTF24_Sharon.zip.parquet",
+        "hash": "514BF12C5862B20937F9\u00adF808932B1368"
+    },
+    {
+        "file": "iOS 14-3 - Apple iPhone SE.tar.parquet",
+        "hash": "7E7CB4D7E6204089758BF41D5D2C5EFC"
+    },
+    {
+        "file": "ios_13_3_1.zip.parquet",
+        "hash": "6641CE1395D392661921CB0CA321E4B7"
+    },
+    {
+        "file": "ios_13_4_1.zip.parquet",
+        "hash": "4E094801BA1E3B938B2C0CC18D0E0D1D"
+    },
+    {
+        "file": "iOS_15_Public_Image.tar.gz.parquet",
+        "hash": "B1EC40D5CD835621326B821D6FA12FF5"
+    },
+    {
+        "file": "iOS_17_Public_Image.tar.gz.parquet",
+        "hash": "E115F051D15178FA1334489E24C9F0FD"
+    },
+    {
+        "file": "iPhone12.zip.parquet",
+        "hash": "0E1D586E89098EC0EBC4E6C12852F462"
+    },
+    {
+        "file": "iPhone14Plus.zip.parquet",
+        "hash": "23075789FE93781A9A99E1DB952F47C5"
+    },
+    {
+        "file": "mus2023 - Google Pixel 3a XL Logical Image - Data.tar.parquet",
+        "hash": "D9EE2D36A5D632C0F694C73F7DEDF878"
+    },
+    {
+        "file": "Pixel_Image2.tar.parquet",
+        "hash": "4FD2761215B377E3BBE9E71CC9E006E8"
+    },
+    {
+        "file": "SamsungA53.zip.parquet",
+        "hash": "BEE600ECC8086325211A4AB5CBF5FF47"
+    },
+    {
+        "file": "SamsungS20.zip.parquet",
+        "hash": "2F89B1547C442B0AFC3102ED80CE477A"
+    },
+    {
+        "file": "sysdiagnose_2021.02.19_16-13-39-0500_iPhone-OS_iPhone_18C66.tar.gz.parquet",
+        "hash": "407BF15E355173AA2B5B930E9553DF9F"
+    },
+    {
+        "file": "sysdiagnose_2023.05.24_13-29-15-0700_iPhone-OS_iPhone_19H349.tar.gz.parquet",
+        "hash": "EB125E920AEF53DD79A7A4145F9CBF51"
+    },
+    {
+        "file": "sysdiagnose_2025.04.07_08-06-18-0700_iPhone-OS_iPhone_20A362.tar.gz.parquet",
+        "hash": "237CFF6B720A37A1BDC502D096437428"
+    },
+    {
+        "file": "UserB2.7z.parquet",
+        "hash": "76077DCE06C68D8EC5505173180E0A5F"
+    }
 ]
