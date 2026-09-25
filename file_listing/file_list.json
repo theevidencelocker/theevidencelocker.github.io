@@ -12,6 +12,14 @@
         "hash": "56EBD62968D37B67E656AD58EEE7A985"
     },
     {
+        "file": "2020 CTF - Android.tar.parquet",
+        "hash": "3BB6ABB3BF6D09E3E65D20EFC7EC23B1"
+    },
+    {
+        "file": "2020 CTF - iOS.zip.parquet",
+        "hash": "8134DFB212393099573AB5C3123172F3"
+    },
+    {
         "file": "2021 CTF - iOS.zip.parquet",
         "hash": "DB9749679B1A4042C3B27DC1ADA69C24"
     },
@@ -42,6 +50,14 @@
     {
         "file": "Android.7z.parquet",
         "hash": "7188177ACDC73A5EDB8F6B969E9D6881"
+    },
+    {
+        "file": "Android_10.zip.parquet",
+        "hash": "32BA185A08B7C6ABF1DAB9A06E939CAE"
+    },
+    {
+        "file": "android_11.zip.parquet",
+        "hash": "9553729D10BC6CAE84916A506CB74D98"
     },
     {
         "file": "android_12.zip.parquet",
