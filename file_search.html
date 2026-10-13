@@ -621,9 +621,17 @@
         displayColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
             if (filterVal) {
-                const cleanFilter = filterVal.replace(/'/g, "''");
-                
-                baseQuery += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+                if (col.toLowerCase().includes('path')) {
+                    const tokens = filterVal.replace(/[\\/]/g, ' ').split(/\s+/).filter(Boolean);
+                    tokens.forEach(token => {
+                        const cleanToken = token.replace(/'/g, "''");
+                        // Use CHR(92) to safely bypass syntax parsing errors with backslashes
+                        baseQuery += ` AND REPLACE(CAST("${col}" AS VARCHAR), CHR(92), '/') ILIKE '%${cleanToken}%' `;
+                    });
+                } else {
+                    const cleanFilter = filterVal.replace(/'/g, "''");
+                    baseQuery += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+                }
             }
         });
 
@@ -739,8 +747,17 @@
         displayColumns.forEach(col => {
             const filterVal = document.getElementById(`filter_${col}`).value.trim();
             if (filterVal) {
-                const cleanFilter = filterVal.replace(/'/g, "''");
-                baseQuery += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+                if (col.toLowerCase().includes('path')) {
+                    const tokens = filterVal.replace(/[\\/]/g, ' ').split(/\s+/).filter(Boolean);
+                    tokens.forEach(token => {
+                        const cleanToken = token.replace(/'/g, "''");
+                        // Use CHR(92) to safely bypass syntax parsing errors with backslashes
+                        baseQuery += ` AND REPLACE(CAST("${col}" AS VARCHAR), CHR(92), '/') ILIKE '%${cleanToken}%' `;
+                    });
+                } else {
+                    const cleanFilter = filterVal.replace(/'/g, "''");
+                    baseQuery += ` AND CAST("${col}" AS VARCHAR) ILIKE '%${cleanFilter}%' `;
+                }
             }
         });
 
